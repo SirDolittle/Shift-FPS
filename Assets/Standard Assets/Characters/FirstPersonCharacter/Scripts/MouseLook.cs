@@ -2,6 +2,9 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
+//This is a import of unity standard assets and is NOT my code
+
+
 namespace UnityStandardAssets.Characters.FirstPerson
 {
     [Serializable]

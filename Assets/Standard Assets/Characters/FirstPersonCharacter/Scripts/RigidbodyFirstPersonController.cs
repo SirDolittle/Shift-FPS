@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
+//*This is a import of unity standard assets and is NOT my code*
+
 namespace UnityStandardAssets.Characters.FirstPerson
 {
     [RequireComponent(typeof (Rigidbody))]
@@ -209,10 +211,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-        private Vector2 GetInput()
+        private Vector3 GetInput()
         {
             
-            Vector2 input = new Vector2
+            Vector3 input = new Vector3
                 {
                     x = CrossPlatformInputManager.GetAxis("Horizontal"),
                     y = CrossPlatformInputManager.GetAxis("Vertical")
