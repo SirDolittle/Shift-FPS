@@ -29,7 +29,7 @@ public class CharacterController : MonoBehaviour
     private CameraController cameraController;
 
     private Transform myTransform;
-    public BoxCollider boxCollider; // drag BoxCollider ref in editor
+    public CapsuleCollider capsuleCollider; // drag BoxCollider ref in editor
 
     private void Start()
     {
@@ -38,9 +38,8 @@ public class CharacterController : MonoBehaviour
         myNormal = transform.up; // normal starts as character up direction
         myTransform = transform;
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
-                                         // distance from transform.position to ground
-        distGround = boxCollider.size.y - boxCollider.center.y;
- 
+        distGround = capsuleCollider.height - capsuleCollider.center.y; // distance from transform.position to ground
+
     }
 
     private void FixedUpdate()
