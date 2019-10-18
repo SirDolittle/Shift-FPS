@@ -40,8 +40,7 @@ public class CharacterController : MonoBehaviour
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
                                          // distance from transform.position to ground
         distGround = boxCollider.size.y - boxCollider.center.y;
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
+ 
     }
 
     private void FixedUpdate()
@@ -91,6 +90,8 @@ public class CharacterController : MonoBehaviour
         {
             gravityShiftUI.SetActive(true);
             Time.timeScale = 0.5f;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             //call GravityUIController script
         }
         else
@@ -99,6 +100,8 @@ public class CharacterController : MonoBehaviour
             Time.timeScale = 1.0f;
             myTransform.Rotate(0, Input.GetAxis("Mouse X") * turnSpeed * Time.deltaTime, 0); // Rotates the player model and camera
             cameraController.CameraYRotation();
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
 
         }
 
