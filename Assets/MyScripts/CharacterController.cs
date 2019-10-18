@@ -26,6 +26,7 @@ public class CharacterController : MonoBehaviour
     private float cameraYAxis;
     private float jumpRotationSpeed = 2;
     private bool shiftKeyHeld = false;
+    private CameraController cameraController;
 
     private Transform myTransform;
     public BoxCollider boxCollider; // drag BoxCollider ref in editor
@@ -33,13 +34,14 @@ public class CharacterController : MonoBehaviour
     private void Start()
     {
         playerCamera = GameObject.FindWithTag("PlayerCamera");
-
+        cameraController = FindObjectOfType<CameraController>();
         myNormal = transform.up; // normal starts as character up direction
         myTransform = transform;
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
                                          // distance from transform.position to ground
         distGround = boxCollider.size.y - boxCollider.center.y;
-
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void FixedUpdate()
@@ -47,37 +49,34 @@ public class CharacterController : MonoBehaviour
         // apply constant weight force according to character normal:
         GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
 
-        PlayerGravityDirection();
+        GravityUIControll();
     }
 
     private void Update()
     {
-        // jump code - jump to wall or simple jump
-
-        // movement code - turn left/right with Horizontal axis:
-        myTransform.Rotate(0, Input.GetAxis("Mouse X") * turnSpeed * Time.deltaTime, 0);
-        GroundDectection();
-
        
-
-        //myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
-        Vector3 myForward = Vector3.Cross(myTransform.right, myNormal); // find forward direction with new myNormal
-        Quaternion targetRot = Quaternion.LookRotation(myForward, myNormal); // align character to the new myNormal while keeping the forward direction
-        myTransform.rotation = Quaternion.Lerp(myTransform.rotation, targetRot, lerpSpeed * Time.deltaTime);
-        myTransform.Translate(Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime, 0, Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);  // move the character forth/back with Vertical axis
-
-        //find the offset between dstRot & lstRot
-        //get lstRot
-        //Get the rotation before JumpToWall is called 
-        //
+        GroundDectection();
+        PlayerMovement();
+        UpdatePlayerForward();
+       
 
     }
 
-    private void PlayerGravityDirection()
+    private void UpdatePlayerForward()
     {
-        Ray ray;
-        RaycastHit hit;
+        Vector3 myForward = Vector3.Cross(myTransform.right, myNormal); // find forward direction with new myNormal
+      
+        Quaternion targetRot = Quaternion.LookRotation(myForward, myNormal); // align character to the new myNormal while keeping the forward direction
+        myTransform.rotation = Quaternion.Lerp(myTransform.rotation, targetRot, lerpSpeed * Time.deltaTime);
+    }
 
+    private void PlayerMovement()
+    {
+        myTransform.Translate(Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime, 0, Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);  // move the character forth/back with Vertical axis
+    }
+
+    private void GravityUIControll()
+    {
         if (Input.GetKey(KeyCode.LeftShift))
         {
             shiftKeyHeld = true;
@@ -98,6 +97,9 @@ public class CharacterController : MonoBehaviour
         {
             gravityShiftUI.SetActive(false);
             Time.timeScale = 1.0f;
+            myTransform.Rotate(0, Input.GetAxis("Mouse X") * turnSpeed * Time.deltaTime, 0); // Rotates the player model and camera
+            cameraController.CameraYRotation();
+
         }
 
             if (Input.GetButtonDown("Jump"))
@@ -197,13 +199,11 @@ public class CharacterController : MonoBehaviour
     private void JumpToWall(Vector3 point, Vector3 normal)
     {
         // jump to wall
+        myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
         jumping = true; // signal it's jumping to wall
-        //GetComponent<Rigidbody>().isKinematic = true; // disable physics while jumping
-        //Vector3 orgPos = myTransform.position;
         Quaternion orgRot = myTransform.rotation;
         Vector3 dstPos = point + normal * (distGround + 0.5f); // will jump to 0.5 above wall
         Vector3 myForward = Vector3.Cross(myTransform.right, normal);
-        Debug.Log("myForward = " + myForward);
         Quaternion dstRot = Quaternion.LookRotation(myForward, normal);
         
 
