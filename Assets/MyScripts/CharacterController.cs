@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
 
-    private float moveSpeed = 6; // move speed
+    private float moveSpeed = 10; // move speed
     private float turnSpeed = 90; // turning speed (degrees/second)
     private float lerpSpeed = 5; // smoothing speed
     private float gravity = 9.8f; // gravity acceleration
@@ -17,7 +17,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 myNormal; // character normal
     private Vector3 relataiveRotation;
     private float distGround; // distance from character position to ground
-    private bool jumping = false; // flag &quot;I'm jumping to wall&quot;
+    private bool jumpingToWall = false; // flag &quot;I'm jumping to wall&quot;
     private float vertSpeed = 0; // vertical jump current speed
     private GameObject playerCamera;
     public GameObject gameController;
@@ -31,6 +31,10 @@ public class CharacterController : MonoBehaviour
     private Transform myTransform;
     public CapsuleCollider capsuleCollider; // drag BoxCollider ref in editor
 
+    public Rigidbody mBody;
+
+
+
     private void Start()
     {
         playerCamera = GameObject.FindWithTag("PlayerCamera");
@@ -38,7 +42,7 @@ public class CharacterController : MonoBehaviour
         myNormal = transform.up; // normal starts as character up direction
         myTransform = transform;
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
-        distGround = capsuleCollider.height - capsuleCollider.center.y; // distance from transform.position to ground
+        distGround = capsuleCollider.height - capsuleCollider.center.y; // distance from transform.position to ground.
 
     }
 
@@ -46,7 +50,6 @@ public class CharacterController : MonoBehaviour
     {
         // apply constant weight force according to character normal:
         GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
-
         GravityUIControll();
     }
 
@@ -63,7 +66,6 @@ public class CharacterController : MonoBehaviour
     private void UpdatePlayerForward()
     {
         Vector3 myForward = Vector3.Cross(myTransform.right, myNormal); // find forward direction with new myNormal
-      
         Quaternion targetRot = Quaternion.LookRotation(myForward, myNormal); // align character to the new myNormal while keeping the forward direction
         myTransform.rotation = Quaternion.Lerp(myTransform.rotation, targetRot, lerpSpeed * Time.deltaTime);
     }
@@ -104,13 +106,17 @@ public class CharacterController : MonoBehaviour
 
         }
 
-            if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (isGrounded)
+            { // no: if grounded, jump up
+              GetComponent<Rigidbody>().velocity += jumpSpeed * myNormal;
+            }
+            else
             {
-                if (isGrounded)
-                { // no: if grounded, jump up
-                    GetComponent<Rigidbody>().velocity += jumpSpeed * myNormal;
-                }
-           }
+           
+            }
+        }
     }
 
     public void GravityForwards()
@@ -202,18 +208,17 @@ public class CharacterController : MonoBehaviour
     {
         // jump to wall
         myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
-        jumping = true; // signal it's jumping to wall
+        jumpingToWall = true; // signal it's jumping to wall
         Quaternion orgRot = myTransform.rotation;
         Vector3 dstPos = point + normal * (distGround + 0.5f); // will jump to 0.5 above wall
         Vector3 myForward = Vector3.Cross(myTransform.right, normal);
-        Quaternion dstRot = Quaternion.LookRotation(myForward, normal);
         
 
-        StartCoroutine(jumpTime( orgRot, dstPos, dstRot, normal));
+        StartCoroutine(jumpTime( orgRot, dstPos,  normal));
         //jumptime
     }
 
-    private IEnumerator jumpTime(Quaternion orgRot, Vector3 dstPos, Quaternion dstRot, Vector3 normal)
+    private IEnumerator jumpTime(Quaternion orgRot, Vector3 dstPos, Vector3 normal)
     {
         for (float t = 0.0f; t < 1.0f;)
         {
@@ -224,7 +229,7 @@ public class CharacterController : MonoBehaviour
         }
         myNormal = normal; // update myNormal
         //GetComponent<Rigidbody>().isKinematic = false; // enable physics
-        jumping = false; // jumping to wall finished
+        jumpingToWall = false; // jumping to wall finished
         Time.timeScale = 1.0f;
      
 
