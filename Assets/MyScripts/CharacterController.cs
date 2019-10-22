@@ -9,27 +9,33 @@ public class CharacterController : MonoBehaviour
     private float turnSpeed = 90; // turning speed (degrees/second)
     private float lerpSpeed = 5; // smoothing speed
     private float gravity = 9.8f; // gravity acceleration
-    private bool isGrounded;
     private float deltaGround = 0.2f; // character is grounded up to this distance
     private float jumpSpeed = 10; // vertical jump initial speed
     private float jumpRange = 10; // range to detect target wall
+    private float distGround; // distance from character position to ground
+    private float cameraYAxis;
+    private float jumpRotationSpeed = 2;
+    private float vertSpeed = 0; // vertical jump current speed
+
     private Vector3 surfaceNormal; // current surface normal
     private Vector3 myNormal; // character normal
     private Vector3 relataiveRotation;
-    private float distGround; // distance from character position to ground
-    private bool jumpingToWall = false; // flag &quot;I'm jumping to wall&quot;
-    private float vertSpeed = 0; // vertical jump current speed
+    private Vector2 cameraYRotation;
+
     private GameObject playerCamera;
     public GameObject gameController;
     public GameObject gravityShiftUI;
-    private Vector2 cameraYRotation;
-    private float cameraYAxis;
-    private float jumpRotationSpeed = 2;
+
     private bool shiftKeyHeld = false;
-    private CameraController cameraController;
+    private bool isGrounded;
+    private bool jumpingToWall = false; // flag &quot;I'm jumping to wall&quot;
 
     private Transform myTransform;
+
+    private PlayerStats playerStats;
+    private CameraController cameraController;
     public CapsuleCollider capsuleCollider; // drag BoxCollider ref in editor
+
 
     public Rigidbody mBody;
 
@@ -39,6 +45,7 @@ public class CharacterController : MonoBehaviour
     {
         playerCamera = GameObject.FindWithTag("PlayerCamera");
         cameraController = FindObjectOfType<CameraController>();
+        playerStats = FindObjectOfType<PlayerStats>();
         myNormal = transform.up; // normal starts as character up direction
         myTransform = transform;
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
@@ -59,8 +66,18 @@ public class CharacterController : MonoBehaviour
         GroundDectection();
         PlayerMovement();
         UpdatePlayerForward();
+        PlayerShoot();
        
 
+    }
+
+    private void PlayerShoot()
+    {
+        if(Input.GetButton("Fire1"))
+        {
+            //Insert Damage function
+            playerStats.Fire();
+        }
     }
 
     private void UpdatePlayerForward()
