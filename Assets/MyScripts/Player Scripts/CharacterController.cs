@@ -31,10 +31,9 @@ public class CharacterController : MonoBehaviour
     private bool jumpingToWall = false; // flag &quot;I'm jumping to wall&quot;
 
     private Transform myTransform;
-
-    private PlayerStats playerStats;
     private CameraController cameraController;
     public CapsuleCollider capsuleCollider; // drag BoxCollider ref in editor
+    private WeaponController weaponController;
 
 
     public Rigidbody mBody;
@@ -45,7 +44,7 @@ public class CharacterController : MonoBehaviour
     {
         playerCamera = GameObject.FindWithTag("PlayerCamera");
         cameraController = FindObjectOfType<CameraController>();
-        playerStats = FindObjectOfType<PlayerStats>();
+        weaponController = FindObjectOfType<WeaponController>(); 
         myNormal = transform.up; // normal starts as character up direction
         myTransform = transform;
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
@@ -76,7 +75,7 @@ public class CharacterController : MonoBehaviour
         if(Input.GetButton("Fire1"))
         {
             //Insert Damage function
-            playerStats.Fire();
+            weaponController.Fire();
         }
     }
 
