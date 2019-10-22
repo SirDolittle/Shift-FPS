@@ -72,7 +72,7 @@ public class CharacterController : MonoBehaviour
 
     private void PlayerShoot()
     {
-        if(Input.GetButton("Fire1"))
+        if(Input.GetButton("Fire1") && weaponController.weaponHasFired == false)
         {
             //Insert Damage function
             weaponController.Fire();
@@ -240,11 +240,9 @@ public class CharacterController : MonoBehaviour
         {
             Time.timeScale = 0.5f;
             t += jumpRotationSpeed * Time.deltaTime;
-          //  myTransform.rotation = Quaternion.Slerp(orgRot, dstRot, t);
             yield return null; // return here next frame
         }
         myNormal = normal; // update myNormal
-        //GetComponent<Rigidbody>().isKinematic = false; // enable physics
         jumpingToWall = false; // jumping to wall finished
         Time.timeScale = 1.0f;
      
