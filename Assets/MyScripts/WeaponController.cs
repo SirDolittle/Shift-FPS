@@ -5,10 +5,13 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     public GameObject currentWEquipped;
+    public GameObject PlayerCamera;
     public GameObject[] weapons;
     public float[] weaponAmmoAmounts;
     public bool[] isWeaponEquipped;
     public float[] currentAmmoAmounts;
+    public int[] weaponDamageStats;
+    public int[] impactForce;
 
     public bool isOutOfAmmo = false;
     public bool weaponHasFired = false;
@@ -19,6 +22,7 @@ public class WeaponController : MonoBehaviour
     public GameObject playerWSlot;
 
     private PlayerStats playerStats;
+    private EnemyStats enemyStats;
 
     private bool isWeaponChanging = false;
 
@@ -26,7 +30,7 @@ public class WeaponController : MonoBehaviour
     void Start()
     {
         playerStats = FindObjectOfType<PlayerStats>();
-
+        enemyStats = FindObjectOfType<EnemyStats>();
 
         isWeaponEquipped = new bool[3];
     
@@ -63,6 +67,7 @@ public class WeaponController : MonoBehaviour
         {
 
             RifleStats();
+ 
         }
         else if (isWeaponEquipped[2] == true && isOutOfAmmo == false)
         {
@@ -165,83 +170,140 @@ public class WeaponController : MonoBehaviour
 
     void PistolStats()
     {
-      
 
-        if (currentAmmoAmounts[0] >= weaponAmmoAmounts[0]) //Check to see if the weapon has reached max ammo
+        if (currentAmmoAmounts[0] > weaponAmmoAmounts[0]) //Check to see if the weapon has reached max ammo
         {
           currentAmmoAmounts[0] = weaponAmmoAmounts[0]; // if so set the current ammo to equal the max ammo
-        } else 
-        if (currentAmmoAmounts[0] < 1) //Check to see if the weapon is out of ammo 
+        }
+        if (currentAmmoAmounts[0] <= 0) //Check to see if the weapon is out of ammo 
         {
             currentAmmoAmounts[0] = 0; //Stops ammo from going into minus numbers
             isOutOfAmmo = true; //Stops the ability to fire the weapon
+            Debug.Log("Out OF AMMO");
         }
-        StartCoroutine(PistolFireRate());
-       
-        IEnumerator PistolFireRate()
+        else
         {
-            Debug.Log("PISTOL FIRED");
-            currentAmmoAmounts[0] -= 1f;
-            weaponHasFired = true;
-            yield return new WaitForSeconds(1f);
-            weaponHasFired = false;
-            
-        }
+            StartCoroutine(PistolFireRate());
 
+            IEnumerator PistolFireRate()
+            {
+                Debug.Log("PISTOL FIRED");
+                currentAmmoAmounts[0] -= 1f;
+                weaponHasFired = true;
+                RaycastHit hit;
+                Ray ray = new Ray (PlayerCamera.transform.position, PlayerCamera.transform.forward);
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    if (hit.collider.tag == "Enemy")
+                    {
+                        Debug.Log("Enemy Hit!");
+                        enemyStats.currentEnemyHealth -= weaponDamageStats[0];
+                    }
+                    else
+                    if (hit.rigidbody != null)
+                    {
+                        hit.rigidbody.AddForce(-hit.normal * impactForce[0]);
+                    }
+
+                }
+                yield return new WaitForSeconds(1f);
+                weaponHasFired = false;
+            }
+
+        }
         //Damage
     }
 
-
-
     void RifleStats()
     {
-        if (currentAmmoAmounts[1] >= weaponAmmoAmounts[1]) //Check to see if the weapon has reached max ammo
+        if (currentAmmoAmounts[1] > weaponAmmoAmounts[1]) //Check to see if the weapon has reached max ammo
         {
             currentAmmoAmounts[1] = weaponAmmoAmounts[1]; // if so set the current ammo to equal the max ammo
         }
         else
-        if (currentAmmoAmounts[1] < 1) //Check to see if the weapon is out of ammo 
+        if (currentAmmoAmounts[1] <= 1) //Check to see if the weapon is out of ammo 
         {
             currentAmmoAmounts[1] = 0; //Stops ammo from going into minus numbers
             isOutOfAmmo = true; //Stops the ability to fire the weapon
+            Debug.Log("Out OF AMMO");
         }
-        StartCoroutine(RifleFireRate());
-
-        IEnumerator RifleFireRate()
+        else
         {
-            Debug.Log("Rifle FIRED");
-            currentAmmoAmounts[1] -= 1f;
-            weaponHasFired = true;
-            yield return new WaitForSeconds(1.5f);
-            weaponHasFired = false;
+            StartCoroutine(RifleFireRate());
 
+            IEnumerator RifleFireRate()
+            {
+                Debug.Log("Rifle FIRED");
+                currentAmmoAmounts[1] -= 1f;
+                weaponHasFired = true;
+                RaycastHit hit;
+                Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    if (hit.collider.tag == "Enemy")
+                    {
+                        Debug.Log("Enemy Hit!");
+                        enemyStats.currentEnemyHealth -= weaponDamageStats[1];
+                    }
+                    else
+                    if (hit.rigidbody != null) 
+                    {
+                        hit.rigidbody.AddForce(-hit.normal * impactForce[1]);
+                    }
+
+                }
+                yield return new WaitForSeconds(1.5f);
+                weaponHasFired = false;
+
+            }
         }
+        
     }
 
     void MGStats()
     {
-        if (currentAmmoAmounts[2] >= weaponAmmoAmounts[2]) //Check to see if the weapon has reached max ammo
+        if (currentAmmoAmounts[2] > weaponAmmoAmounts[2]) //Check to see if the weapon has reached max ammo
         {
             currentAmmoAmounts[2] = weaponAmmoAmounts[2]; // if so set the current ammo to equal the max ammo
         }
         else
-            if (currentAmmoAmounts[2] <= 1) //Check to see if the weapon is out of ammo 
-            {
-                currentAmmoAmounts[2] = 0; //Stops ammo from going into minus numbers
-                isOutOfAmmo = true; //Stops the ability to fire the weapon
-            }
-   
-        StartCoroutine(MGFireRate());
-
-        IEnumerator MGFireRate()
+        if (currentAmmoAmounts[2] <= 1) //Check to see if the weapon is out of ammo 
         {
-            Debug.Log("MG FIRED");
-            currentAmmoAmounts[2] -= 1f;
-            weaponHasFired = true;
-            yield return new WaitForSeconds(0.1f);
-            weaponHasFired = false;
-
+            currentAmmoAmounts[2] = 0; //Stops ammo from going into minus numbers
+            isOutOfAmmo = true; //Stops the ability to fire the weapon
+            Debug.Log("Out OF AMMO");
         }
+        else
+        {
+            StartCoroutine(MGFireRate());
+
+            IEnumerator MGFireRate()
+            {
+                Debug.Log("MG FIRED");
+                currentAmmoAmounts[2] -= 1f;
+                weaponHasFired = true;
+                RaycastHit hit;
+                Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    if (hit.collider.tag == "Enemy")
+                    {
+                        Debug.Log("Enemy Hit!");
+                        enemyStats.currentEnemyHealth -= weaponDamageStats[2];
+
+                    } else 
+                    if (hit.rigidbody != null)
+                    {
+                        hit.rigidbody.AddForce(-hit.normal * impactForce[2]);
+                    }
+
+                }
+                yield return new WaitForSeconds(0.1f);
+                weaponHasFired = false;
+
+            }
+        }
+       
     }
 
 }
