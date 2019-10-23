@@ -19,6 +19,7 @@ public class CharacterController : MonoBehaviour
 
     private Vector3 surfaceNormal; // current surface normal
     private Vector3 myNormal; // character normal
+    public Vector3 hitNormal;
     private Vector3 relataiveRotation;
     private Vector2 cameraYRotation;
 
@@ -28,9 +29,10 @@ public class CharacterController : MonoBehaviour
 
     private bool shiftKeyHeld = false;
     private bool isGrounded;
-    private bool jumpingToWall = false; // flag &quot;I'm jumping to wall&quot;
+    public bool jumpingToWall = false; // flag &quot;I'm jumping to wall&quot;
+    public bool gravityShift = false;
 
-    private Transform myTransform;
+    public Transform myTransform;
     private CameraController cameraController;
     public CapsuleCollider capsuleCollider; // drag BoxCollider ref in editor
     private WeaponController weaponController;
@@ -142,7 +144,9 @@ public class CharacterController : MonoBehaviour
         ray = new Ray(myTransform.position, myTransform.forward);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         { // wall ahead?
-            JumpToWall(hit.point, hit.normal); // yes: jump to the wall
+            hitNormal = hit.normal;
+            gravityShift = true;
+            JumpToWall(); // yes: jump to the wall
             Physics.gravity = -hit.normal * gravity;
 
         }
@@ -156,7 +160,9 @@ public class CharacterController : MonoBehaviour
         ray = new Ray(myTransform.position, -myTransform.forward);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         { // wall ahead?
-            JumpToWall(hit.point, hit.normal); // yes: jump to the wall
+            hitNormal = hit.normal;
+            gravityShift = true;
+            JumpToWall(); // yes: jump to the wall
             Physics.gravity = -hit.normal * gravity;
 
         }
@@ -170,7 +176,9 @@ public class CharacterController : MonoBehaviour
         ray = new Ray(myTransform.position, myTransform.right);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         { // wall ahead?
-            JumpToWall(hit.point, hit.normal); // yes: jump to the wall
+            hitNormal = hit.normal;
+            gravityShift = true;
+            JumpToWall(); // yes: jump to the wall
             Physics.gravity = -hit.normal * gravity;
         }
     }
@@ -182,7 +190,9 @@ public class CharacterController : MonoBehaviour
         ray = new Ray(myTransform.position, -myTransform.right);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         { // wall ahead?
-            JumpToWall(hit.point, hit.normal); // yes: jump to the wall
+            hitNormal = hit.normal;
+            gravityShift = true;
+            JumpToWall(); // yes: jump to the wall
             Physics.gravity = -hit.normal * gravity;
         }
     }
@@ -194,7 +204,9 @@ public class CharacterController : MonoBehaviour
         ray = new Ray(myTransform.position, myTransform.up);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         { // wall ahead?
-            JumpToWall(hit.point, hit.normal); // yes: jump to the wall
+            hitNormal = hit.normal;
+            gravityShift = true;
+            JumpToWall(); // yes: jump to the wall
             Physics.gravity = -hit.normal * gravity;
         }
     }
@@ -220,21 +232,19 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    private void JumpToWall(Vector3 point, Vector3 normal)
+    private void JumpToWall()
     {
         // jump to wall
         myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
         jumpingToWall = true; // signal it's jumping to wall
-        Quaternion orgRot = myTransform.rotation;
-        Vector3 dstPos = point + normal * (distGround + 0.5f); // will jump to 0.5 above wall
-        Vector3 myForward = Vector3.Cross(myTransform.right, normal);
+        //Vector3 myForward = Vector3.Cross(myTransform.right, hitNormal);
         
 
-        StartCoroutine(jumpTime( orgRot, dstPos,  normal));
+        StartCoroutine(jumpTime());
         //jumptime
     }
 
-    private IEnumerator jumpTime(Quaternion orgRot, Vector3 dstPos, Vector3 normal)
+    private IEnumerator jumpTime()
     {
         for (float t = 0.0f; t < 1.0f;)
         {
@@ -242,8 +252,9 @@ public class CharacterController : MonoBehaviour
             t += jumpRotationSpeed * Time.deltaTime;
             yield return null; // return here next frame
         }
-        myNormal = normal; // update myNormal
+        myNormal = hitNormal; // update myNormal
         jumpingToWall = false; // jumping to wall finished
+        gravityShift = false;
         Time.timeScale = 1.0f;
      
 
