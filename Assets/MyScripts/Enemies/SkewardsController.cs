@@ -16,16 +16,19 @@ public class SkewardsController : MonoBehaviour
     private float jumpRotationSpeed;
 
     public bool isSkewardDead = false;
+    public bool inMelee = false;
 
     private Vector3 surfaceNormal;
     private Vector3 myNormal;
     private GameObject player;
     private CharacterController characterController;
+    private PlayerStats playerStats;
 
     void Awake()
     {
         player = GameObject.FindWithTag("Player");
         characterController = FindObjectOfType<CharacterController>();
+        playerStats = FindObjectOfType<PlayerStats>();
     }
     void Start()
     {
@@ -48,7 +51,6 @@ public class SkewardsController : MonoBehaviour
             UpdateForward();
         }
         GroundDectection();
-       
         GravityChangeCheck();
         DeathCheck();
         
@@ -58,9 +60,9 @@ public class SkewardsController : MonoBehaviour
     {
         if (characterController.gravityShift == true)
         {
+            Debug.Log("Used gravity check");
             myNormal = characterController.hitNormal;
             myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
-            characterController.gravityShift = false;
         }
     }
 
@@ -72,7 +74,6 @@ public class SkewardsController : MonoBehaviour
 
     private void UpdateForward()
     {
-
         Vector3 myForward = Vector3.Cross(transform.right, myNormal); // find forward direction with new myNormal
         Quaternion targetRot = Quaternion.LookRotation(myForward, myNormal); // align character to the new myNormal while keeping the forward direction
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
@@ -109,6 +110,23 @@ public class SkewardsController : MonoBehaviour
     }
 
 
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player" && inMelee == false && isSkewardDead == false)
+        {
+            inMelee = true;
+            playerStats.currentHealth -= 15;
+            StartCoroutine(MeleeRate());
+        }
+
+        IEnumerator MeleeRate()
+        {
+            yield return new WaitForSeconds(2f);
+            inMelee = false;
+        }
+    }
+
     /*Move toward the player function
      *  When the player is within sight line 
      *      move the enemy towards the player at set speed 
@@ -128,13 +146,6 @@ public class SkewardsController : MonoBehaviour
      *          melee player 
      * 
      */
-
-    /*Melee player function 
-     *    play melee animation 
-     *    play melee sound 
-     *    Deal melee damage
-    */
-
 
     /*Throw Knife function 
      *  Play throw animation 

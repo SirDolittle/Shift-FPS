@@ -130,10 +130,6 @@ public class CharacterController : MonoBehaviour
             { // no: if grounded, jump up
               GetComponent<Rigidbody>().velocity += jumpSpeed * myNormal;
             }
-            else
-            {
-           
-            }
         }
     }
 
@@ -255,6 +251,7 @@ public class CharacterController : MonoBehaviour
         myNormal = hitNormal; // update myNormal
         Debug.Log("Player's myNormal =" + myNormal);
         jumpingToWall = false; // jumping to wall finished
+        gravityShift = false;
         Time.timeScale = 1.0f;
      
 

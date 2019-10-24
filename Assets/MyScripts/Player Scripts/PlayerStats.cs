@@ -18,13 +18,22 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-     
 
+        PlayerDeath();
         
 
     }
 
-
+    void PlayerDeath()
+    {
+        if (currentHealth <= 0)
+        {
+            Object.Destroy(GameObject.FindWithTag("Player").GetComponent<CharacterController>());
+            Object.Destroy(GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>());
+        }
+    }
         
     }
+
+
     //currentAmmoAmouts shows ammo for all weapons in the game
