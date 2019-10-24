@@ -253,8 +253,8 @@ public class CharacterController : MonoBehaviour
             yield return null; // return here next frame
         }
         myNormal = hitNormal; // update myNormal
+        Debug.Log("Player's myNormal =" + myNormal);
         jumpingToWall = false; // jumping to wall finished
-        gravityShift = false;
         Time.timeScale = 1.0f;
      
 

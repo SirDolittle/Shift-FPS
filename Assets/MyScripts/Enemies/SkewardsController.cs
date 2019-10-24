@@ -7,13 +7,15 @@ public class SkewardsController : MonoBehaviour
     public int meleeDamage = 15;
     public int thowingKnifeDamage = 5;
     public float movementSpeed = 3;
+    public int maxHealth = 50;
+    public int currentHealth; 
 
 
     private float gravity = 9.8f;
     private float lerpSpeed = 5f;
     private float jumpRotationSpeed;
 
-    public bool skewardIsDead = false;
+    public bool isSkewardDead = false;
 
     private Vector3 surfaceNormal;
     private Vector3 myNormal;
@@ -27,29 +29,45 @@ public class SkewardsController : MonoBehaviour
     }
     void Start()
     {
+
+        currentHealth = maxHealth;
         myNormal = transform.up;
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
     }
 
     private void FixedUpdate()
     {
-        GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
+       GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
     }
 
     void Update()
     {
-        MoveTowardsPlayer();
+        if(isSkewardDead == false)
+        {
+            MoveTowardsPlayer();
+            UpdateForward();
+        }
         GroundDectection();
-        UpdateForward();
+       
+        GravityChangeCheck();
+        DeathCheck();
+        
     }
 
-   
+    void GravityChangeCheck()
+    {
+        if (characterController.gravityShift == true)
+        {
+            myNormal = characterController.hitNormal;
+            myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
+            characterController.gravityShift = false;
+        }
+    }
 
     void MoveTowardsPlayer()
     {
-        transform.LookAt(player.transform.position);
-        transform.Translate( Vector3.forward * Time.deltaTime * movementSpeed);
-
+            transform.LookAt(player.transform.position, myNormal);
+            transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed);
     }
 
     private void UpdateForward()
@@ -70,7 +88,6 @@ public class SkewardsController : MonoBehaviour
         ray = new Ray(transform.position, -myNormal); // cast ray downwards
         if (Physics.Raycast(ray, out hit))
         { // use it to update myNormal and isGrounded
-            
             surfaceNormal = hit.normal;
 
         }
@@ -81,27 +98,14 @@ public class SkewardsController : MonoBehaviour
         }
     }
 
-    private void JumpToWall()
+    void DeathCheck()
     {
-        // jump to wall
-        myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
-       Vector3 myForward = Vector3.Cross(transform.right, characterController.hitNormal);
-
-
-        StartCoroutine(jumpTime());
-        //jumptime
-    }
-
-    private IEnumerator jumpTime()
-    {
-        for (float t = 0.0f; t < 1.0f;)
+        if(currentHealth <= 0)
         {
-            t += jumpRotationSpeed * Time.deltaTime;
-            yield return null; // return here next frame
+            //play death animation 
+            isSkewardDead = true;
+            GetComponent<Rigidbody>().freezeRotation = false;
         }
-        myNormal = characterController.hitNormal; // update myNormal
-
-
     }
 
 
@@ -139,9 +143,4 @@ public class SkewardsController : MonoBehaviour
      *  add force to the knife towards the player at thorwing knife speed
      */
 
-    /*Death function
-     *  When Skeward Health equals 0
-     *      Play death animation
-     *      set skeward is dead bool to true
-     */
 }

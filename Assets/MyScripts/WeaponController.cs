@@ -20,9 +20,9 @@ public class WeaponController : MonoBehaviour
 
     private GameObject levelStartWeapon;
     public GameObject playerWSlot;
+    public GameObject enemyHitName;
 
     private PlayerStats playerStats;
-    private EnemyStats enemyStats;
 
     private bool isWeaponChanging = false;
 
@@ -30,7 +30,6 @@ public class WeaponController : MonoBehaviour
     void Start()
     {
         playerStats = FindObjectOfType<PlayerStats>();
-        enemyStats = FindObjectOfType<EnemyStats>();
 
         isWeaponEquipped = new bool[3];
     
@@ -197,7 +196,7 @@ public class WeaponController : MonoBehaviour
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");
-                        enemyStats.currentEnemyHealth -= weaponDamageStats[0];
+                         hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[0];
                     }
                     else
                     if (hit.rigidbody != null)
@@ -243,7 +242,7 @@ public class WeaponController : MonoBehaviour
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");
-                        enemyStats.currentEnemyHealth -= weaponDamageStats[1];
+                        hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth-= weaponDamageStats[1];
                     }
                     else
                     if (hit.rigidbody != null) 
@@ -289,7 +288,7 @@ public class WeaponController : MonoBehaviour
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");
-                        enemyStats.currentEnemyHealth -= weaponDamageStats[2];
+                        hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[2];
 
                     } else 
                     if (hit.rigidbody != null)
