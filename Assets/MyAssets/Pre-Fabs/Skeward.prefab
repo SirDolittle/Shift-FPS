@@ -140,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meleeDamage: 15
   thowingKnifeDamage: 5
-  movementSpeed: 3
+  movementSpeed: 10
   maxHealth: 50
   currentHealth: 0
   isSkewardDead: 0

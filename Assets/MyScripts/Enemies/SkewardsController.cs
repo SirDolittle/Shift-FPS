@@ -6,7 +6,7 @@ public class SkewardsController : MonoBehaviour
 { 
     public int meleeDamage = 15;
     public int thowingKnifeDamage = 5;
-    public float movementSpeed = 3;
+    public float movementSpeed = 10;
     public int maxHealth = 50;
     public int currentHealth; 
 
