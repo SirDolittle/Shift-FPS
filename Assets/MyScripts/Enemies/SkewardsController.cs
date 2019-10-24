@@ -47,29 +47,24 @@ public class SkewardsController : MonoBehaviour
     {
         if(isSkewardDead == false)
         {
-            MoveTowardsPlayer();
             UpdateForward();
         }
         GroundDectection();
         GravityChangeCheck();
         DeathCheck();
-        
     }
 
     void GravityChangeCheck()
     {
         if (characterController.gravityShift == true)
         {
-            Debug.Log("Used gravity check");
             myNormal = characterController.hitNormal;
             myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
-        }
-    }
-
-    void MoveTowardsPlayer()
-    {
+        } else if (isSkewardDead == false)
+        {
             transform.LookAt(player.transform.position, myNormal);
             transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed);
+        }
     }
 
     private void UpdateForward()
