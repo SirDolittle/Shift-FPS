@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SkewardsController : MonoBehaviour
 { 
     public int meleeDamage = 15;
     public int thowingKnifeDamage = 5;
-    public float movementSpeed = 10;
     public int maxHealth = 50;
-    public int currentHealth; 
+    public int currentHealth;
+    public float SkewardSightRange;
 
 
     private float gravity = 9.8f;
@@ -17,15 +18,18 @@ public class SkewardsController : MonoBehaviour
 
     public bool isSkewardDead = false;
     public bool inMelee = false;
+    private bool playerInSight = false;
 
     private Vector3 surfaceNormal;
     private Vector3 myNormal;
     private GameObject player;
     private CharacterController characterController;
     private PlayerStats playerStats;
+    private NavMeshAgent skewardNav;
 
     void Awake()
     {
+        skewardNav = GetComponent<NavMeshAgent>();
         player = GameObject.FindWithTag("Player");
         characterController = FindObjectOfType<CharacterController>();
         playerStats = FindObjectOfType<PlayerStats>();
@@ -52,6 +56,7 @@ public class SkewardsController : MonoBehaviour
         GroundDectection();
         GravityChangeCheck();
         DeathCheck();
+        RangeCheck();
     }
 
     void GravityChangeCheck()
@@ -60,10 +65,10 @@ public class SkewardsController : MonoBehaviour
         {
             myNormal = characterController.hitNormal;
             myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
-        } else if (isSkewardDead == false)
+        } else if (isSkewardDead == false && playerInSight == true)
         {
-            transform.LookAt(player.transform.position, myNormal);
-            transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed);
+            transform.LookAt(player.transform.position, myNormal); //points enemies forward at player
+            skewardNav.destination = player.transform.position;
         }
     }
 
@@ -101,10 +106,18 @@ public class SkewardsController : MonoBehaviour
             //play death animation 
             isSkewardDead = true;
             GetComponent<Rigidbody>().freezeRotation = false;
+            skewardNav.enabled = false;
         }
     }
-
-
+   
+    void RangeCheck()
+    {
+        float playerDist = Vector3.Distance(player.transform.position, transform.position);
+        if(playerDist <= SkewardSightRange)
+        {
+            playerInSight = true;
+        }
+    }
 
     private void OnTriggerStay(Collider other)
     {
