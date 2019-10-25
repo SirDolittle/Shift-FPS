@@ -8,6 +8,9 @@ TagManager:
   - GravityController
   - Enemy
   - PlayerBody
+  - JumpStart
+  - JumpEnd
+  - Walkable
   layers:
   - Default
   - TransparentFX
@@ -17,8 +20,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 

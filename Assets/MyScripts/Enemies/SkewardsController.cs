@@ -63,12 +63,14 @@ public class SkewardsController : MonoBehaviour
     {
         if (characterController.gravityShift == true)
         {
+            skewardNav.enabled = false;
             myNormal = characterController.hitNormal;
             myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
-        } else if (isSkewardDead == false && playerInSight == true)
+            transform.LookAt(player.transform.position, myNormal);
+        }
+        else if (isSkewardDead == false && playerInSight == true)
         {
-            transform.LookAt(player.transform.position, myNormal); //points enemies forward at player
-            skewardNav.destination = player.transform.position;
+           skewardNav.destination = player.transform.position;
         }
     }
 
@@ -87,10 +89,14 @@ public class SkewardsController : MonoBehaviour
         Ray ray;
         RaycastHit hit;
         ray = new Ray(transform.position, -myNormal); // cast ray downwards
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, 1))
         { // use it to update myNormal and isGrounded
             surfaceNormal = hit.normal;
-
+            if (hit.collider.tag == "Walkable")
+            {
+                skewardNav.enabled = true;
+            }
+            
         }
         else
         {

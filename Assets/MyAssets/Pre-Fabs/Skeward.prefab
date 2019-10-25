@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 1973981537798631566}
   - component: {fileID: 1973981537798631567}
   - component: {fileID: 1973981537798632308}
-  - component: {fileID: 3111785506022473201}
-  m_Layer: 0
+  - component: {fileID: 9205967456173639354}
+  m_Layer: 9
   m_Name: Skeward
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -141,13 +141,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meleeDamage: 15
   thowingKnifeDamage: 5
-  movementSpeed: 7
   maxHealth: 50
   currentHealth: 0
   SkewardSightRange: 20
   isSkewardDead: 0
   inMelee: 0
---- !u!195 &3111785506022473201
+  jumpLoctation: {fileID: 3258462621565822021, guid: e5918cfaf8516a241aac3c487535d802,
+    type: 3}
+--- !u!195 &9205967456173639354
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,7 +158,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 7
+  m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -181,7 +182,7 @@ GameObject:
   - component: {fileID: 1973981538979744435}
   - component: {fileID: 1973981538979744436}
   - component: {fileID: 1973981538979744437}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

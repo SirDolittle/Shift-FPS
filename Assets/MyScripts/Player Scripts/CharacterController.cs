@@ -20,6 +20,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 surfaceNormal; // current surface normal
     private Vector3 myNormal; // character normal
     public Vector3 hitNormal;
+    public Vector3 hitPosition;
     private Vector3 relataiveRotation;
     private Vector2 cameraYRotation;
 
@@ -141,6 +142,7 @@ public class CharacterController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         { // wall ahead?
             hitNormal = hit.normal;
+            hitPosition = hit.point;
             gravityShift = true;
             JumpToWall(); // yes: jump to the wall
             Physics.gravity = -hit.normal * gravity;
@@ -158,6 +160,7 @@ public class CharacterController : MonoBehaviour
         { // wall ahead?
             hitNormal = hit.normal;
             gravityShift = true;
+            hitPosition = hit.point;
             JumpToWall(); // yes: jump to the wall
             Physics.gravity = -hit.normal * gravity;
 
@@ -174,6 +177,7 @@ public class CharacterController : MonoBehaviour
         { // wall ahead?
             hitNormal = hit.normal;
             gravityShift = true;
+            hitPosition = hit.point;
             JumpToWall(); // yes: jump to the wall
             Physics.gravity = -hit.normal * gravity;
         }
@@ -188,6 +192,7 @@ public class CharacterController : MonoBehaviour
         { // wall ahead?
             hitNormal = hit.normal;
             gravityShift = true;
+            hitPosition = hit.point;
             JumpToWall(); // yes: jump to the wall
             Physics.gravity = -hit.normal * gravity;
         }
@@ -202,6 +207,7 @@ public class CharacterController : MonoBehaviour
         { // wall ahead?
             hitNormal = hit.normal;
             gravityShift = true;
+            hitPosition = hit.point;
             JumpToWall(); // yes: jump to the wall
             Physics.gravity = -hit.normal * gravity;
         }
