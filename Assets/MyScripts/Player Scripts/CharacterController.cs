@@ -75,7 +75,7 @@ public class CharacterController : MonoBehaviour
 
     private void PlayerShoot()
     {
-        if(Input.GetButton("Fire1") && weaponController.weaponHasFired == false)
+        if(Input.GetButton("Fire1") && weaponController.weaponHasFired == false && shiftKeyHeld == false)
         {
             //Insert Damage function
             weaponController.Fire();

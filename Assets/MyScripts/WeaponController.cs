@@ -163,7 +163,6 @@ public class WeaponController : MonoBehaviour
 
         //things we want weapons to do:
         //Pick up 
-        //shoot
 
     }
 
@@ -193,10 +192,12 @@ public class WeaponController : MonoBehaviour
                 Ray ray = new Ray (PlayerCamera.transform.position, PlayerCamera.transform.forward);
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
+                    Debug.Log("Ray Casted");
+
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");
-                         hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[0];
+                        hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[0];
                     }
                     else
                     if (hit.rigidbody != null)
@@ -204,7 +205,7 @@ public class WeaponController : MonoBehaviour
                         hit.rigidbody.AddForce(-hit.normal * impactForce[0]);
                     }
 
-                }
+                } 
                 yield return new WaitForSeconds(1f);
                 weaponHasFired = false;
             }

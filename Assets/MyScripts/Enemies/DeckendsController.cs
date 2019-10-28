@@ -3,26 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SkewardsController : MonoBehaviour
+public class DeckendsController : MonoBehaviour
 { 
     public int meleeDamage = 15;
     public int thowingKnifeDamage = 5;
     public int maxHealth = 50;
     public int currentHealth;
-    public int throwingknifeAmmount;
     public float SkewardSightRange;
-    public GameObject knifeThrowOrigin;
-    public GameObject throwingKnifeOBJ;
+    public float throwingRange;
 
 
     private float gravity = 9.8f;
     private float lerpSpeed = 5f;
     private float jumpRotationSpeed;
-    private bool inThrowingRange = false;
 
     public bool isSkewardDead = false;
     public bool inMelee = false;
-    private bool isThrowing = false;
     private bool playerInSight = false;
 
     private Vector3 surfaceNormal;
@@ -94,7 +90,7 @@ public class SkewardsController : MonoBehaviour
         Ray ray;
         RaycastHit hit;
         ray = new Ray(transform.position, -myNormal); // cast ray downwards
-        if (Physics.Raycast(ray, out hit, 2))
+        if (Physics.Raycast(ray, out hit, 1))
         { // use it to update myNormal and isGrounded
             surfaceNormal = hit.normal;
             if (hit.collider.tag == "Walkable")
@@ -124,35 +120,13 @@ public class SkewardsController : MonoBehaviour
     void RangeCheck()
     {
         float playerDist = Vector3.Distance(player.transform.position, transform.position);
+        Debug.Log(playerDist);
         if(playerDist <= SkewardSightRange)
         {
             playerInSight = true;
-        } 
-        if(playerDist >= 5 && playerDist <=15 && isSkewardDead == false && isThrowing == false && throwingknifeAmmount >= 0)
-        {
-            Debug.Log("Throw Knife");
-            isThrowing = true;
-            throwingknifeAmmount -= 1;
-            ThrowKnife();
-            StartCoroutine(ThrowRate());
-           
-        }
-
-        IEnumerator ThrowRate()
-        {
-            yield return new WaitForSeconds(2f);
-            isThrowing = false;
         }
 
 
-    }
-
-    void ThrowKnife()
-    {
-        
-        throwingKnifeOBJ = Instantiate(throwingKnifeOBJ, knifeThrowOrigin.transform.position, transform.rotation);
-        throwingKnifeOBJ.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
-        
     }
 
     private void OnTriggerStay(Collider other)

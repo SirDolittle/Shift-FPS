@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1973981537798631567}
   - component: {fileID: 1973981537798632308}
   - component: {fileID: 9205967456173639354}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Skeward
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -35,6 +35,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1973981538979744438}
+  - {fileID: 129403413884516356}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -143,11 +144,13 @@ MonoBehaviour:
   thowingKnifeDamage: 5
   maxHealth: 50
   currentHealth: 0
+  throwingknifeAmmount: 5
   SkewardSightRange: 20
+  knifeThrowOrigin: {fileID: 7400731630615033957}
+  throwingKnifeOBJ: {fileID: 1079922155775270933, guid: dcba82e569a1e664a88eb0eaba896dc2,
+    type: 3}
   isSkewardDead: 0
   inMelee: 0
-  jumpLoctation: {fileID: 3258462621565822021, guid: e5918cfaf8516a241aac3c487535d802,
-    type: 3}
 --- !u!195 &9205967456173639354
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -182,9 +185,9 @@ GameObject:
   - component: {fileID: 1973981538979744435}
   - component: {fileID: 1973981538979744436}
   - component: {fileID: 1973981538979744437}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -262,3 +265,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &7400731630615033957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 129403413884516356}
+  m_Layer: 0
+  m_Name: KnifeSpawnLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &129403413884516356
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7400731630615033957}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.446, y: 0.607, z: 0.546}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1973981537798632304}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
