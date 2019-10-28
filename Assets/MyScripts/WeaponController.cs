@@ -193,7 +193,7 @@ public class WeaponController : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
                     Debug.Log("Ray Casted");
-
+                    Debug.Log("Ray tag =" + hit.collider.tag);
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");
@@ -240,6 +240,7 @@ public class WeaponController : MonoBehaviour
                 Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
+                    Debug.Log("Ray tag =" + hit.collider.tag);
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");
@@ -286,6 +287,7 @@ public class WeaponController : MonoBehaviour
                 Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
+                    Debug.Log("Ray tag =" + hit.collider.tag);
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");

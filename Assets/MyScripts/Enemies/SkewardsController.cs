@@ -13,6 +13,7 @@ public class SkewardsController : MonoBehaviour
     public float SkewardSightRange;
     public GameObject knifeThrowOrigin;
     public GameObject throwingKnifeOBJ;
+   
 
 
     private float gravity = 9.8f;
@@ -31,6 +32,7 @@ public class SkewardsController : MonoBehaviour
     private CharacterController characterController;
     private PlayerStats playerStats;
     private NavMeshAgent skewardNav;
+    private GameObject prefabKnife;
 
     void Awake()
     {
@@ -41,7 +43,6 @@ public class SkewardsController : MonoBehaviour
     }
     void Start()
     {
-
         currentHealth = maxHealth;
         myNormal = transform.up;
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
@@ -97,10 +98,7 @@ public class SkewardsController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 2))
         { // use it to update myNormal and isGrounded
             surfaceNormal = hit.normal;
-            if (hit.collider.tag == "Walkable")
-            {
-                skewardNav.enabled = true;
-            }
+            skewardNav.enabled = true;
             
         }
         else
@@ -128,7 +126,7 @@ public class SkewardsController : MonoBehaviour
         {
             playerInSight = true;
         } 
-        if(playerDist >= 5 && playerDist <=15 && isSkewardDead == false && isThrowing == false && throwingknifeAmmount >= 0)
+        if(playerDist >= 5 && playerDist <=15 && isSkewardDead == false && isThrowing == false && throwingknifeAmmount >= 1)
         {
             Debug.Log("Throw Knife");
             isThrowing = true;
@@ -147,13 +145,15 @@ public class SkewardsController : MonoBehaviour
 
     }
 
-    void ThrowKnife()
+     void ThrowKnife()
     {
         
-        throwingKnifeOBJ = Instantiate(throwingKnifeOBJ, knifeThrowOrigin.transform.position, transform.rotation);
-        throwingKnifeOBJ.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
-        
+        prefabKnife = Instantiate(throwingKnifeOBJ, knifeThrowOrigin.transform.position, transform.rotation);
+        prefabKnife.GetComponent<Rigidbody>().AddForce(transform.forward * 2000);
+
     }
+
+    
 
     private void OnTriggerStay(Collider other)
     {
