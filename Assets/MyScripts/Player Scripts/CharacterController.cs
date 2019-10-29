@@ -18,7 +18,7 @@ public class CharacterController : MonoBehaviour
     private float vertSpeed = 0; // vertical jump current speed
 
     private Vector3 surfaceNormal; // current surface normal
-    private Vector3 myNormal; // character normal
+    public Vector3 myNormal; // character normal
     public Vector3 hitNormal;
     public Vector3 hitPosition;
     private Vector3 relataiveRotation;
@@ -70,6 +70,10 @@ public class CharacterController : MonoBehaviour
         UpdatePlayerForward();
         PlayerShoot();
        
+        if(Input.GetKey(KeyCode.H))
+        {
+
+        }
 
     }
 

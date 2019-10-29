@@ -10,6 +10,7 @@ public class WeaponController : MonoBehaviour
     public float[] weaponAmmoAmounts;
     public bool[] isWeaponEquipped;
     public float[] currentAmmoAmounts;
+    public float[] weaponFireRate;
     public int[] weaponDamageStats;
     public int[] impactForce;
 
@@ -206,7 +207,7 @@ public class WeaponController : MonoBehaviour
                     }
 
                 } 
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(weaponFireRate[0]);
                 weaponHasFired = false;
             }
 
@@ -253,7 +254,7 @@ public class WeaponController : MonoBehaviour
                     }
 
                 }
-                yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(weaponFireRate[1]);
                 weaponHasFired = false;
 
             }
@@ -300,7 +301,7 @@ public class WeaponController : MonoBehaviour
                     }
 
                 }
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(weaponFireRate[2]);
                 weaponHasFired = false;
 
             }

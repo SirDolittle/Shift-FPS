@@ -13,8 +13,6 @@ public class SkewardsController : MonoBehaviour
     public float SkewardSightRange;
     public GameObject knifeThrowOrigin;
     public GameObject throwingKnifeOBJ;
-   
-
 
     private float gravity = 9.8f;
     private float lerpSpeed = 5f;
@@ -25,6 +23,7 @@ public class SkewardsController : MonoBehaviour
     public bool inMelee = false;
     private bool isThrowing = false;
     private bool playerInSight = false;
+    private bool isOnGround = true;
 
     private Vector3 surfaceNormal;
     private Vector3 myNormal;
@@ -59,8 +58,8 @@ public class SkewardsController : MonoBehaviour
         {
             UpdateForward();
         }
-        GroundDectection();
         GravityChangeCheck();
+        GroundDectection();
         DeathCheck();
         RangeCheck();
     }
@@ -94,17 +93,19 @@ public class SkewardsController : MonoBehaviour
         // update surface normal and isGrounded:
         Ray ray;
         RaycastHit hit;
-        ray = new Ray(transform.position, -myNormal); // cast ray downwards
-        if (Physics.Raycast(ray, out hit, 2))
-        { // use it to update myNormal and isGrounded
-            surfaceNormal = hit.normal;
-            skewardNav.enabled = true;
-            
-        }
-        else
+        if (skewardNav.enabled == false)
         {
-            // assume usual ground normal to avoid "falling forever"
-            surfaceNormal = Vector3.up;
+            ray = new Ray(transform.position, -myNormal); // cast ray downwards
+            if (Physics.Raycast(ray, out hit, 1f))
+            { // use it to update myNormal and isGrounded
+                surfaceNormal = hit.normal;
+                skewardNav.enabled = true;
+            }
+            else
+            {
+                // assume usual ground normal to avoid "falling forever"
+                surfaceNormal = Vector3.up;
+            }
         }
     }
 
@@ -153,8 +154,6 @@ public class SkewardsController : MonoBehaviour
 
     }
 
-    
-
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player" && inMelee == false && isSkewardDead == false)
@@ -171,31 +170,5 @@ public class SkewardsController : MonoBehaviour
         }
     }
 
-    /*Move toward the player function
-     *  When the player is within sight line 
-     *      move the enemy towards the player at set speed 
-     *  Once in sight line once the enemy constantly moves towards the player. 
-     */
-
-    /*Damage the player function 
-     *  When the player is in line of sight 
-     *      When within knife throwing range 
-     *          stop moving
-     *          Throw knife at player
-     *      if the throwing knifes are out of ammo 
-     *          move towards player 
-     *          once in melee range stop moving
-     *          melee player 
-     *      if the player moves into melee range 
-     *          melee player 
-     * 
-     */
-
-    /*Throw Knife function 
-     *  Play throw animation 
-     *  play throw sound 
-     *  spawn throwing knife prefab at the Skewards position 
-     *  add force to the knife towards the player at thorwing knife speed
-     */
 
 }
