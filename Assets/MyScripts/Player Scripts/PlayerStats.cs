@@ -20,7 +20,6 @@ public class PlayerStats : MonoBehaviour
     {
 
         PlayerDeath();
-        
 
     }
 
@@ -30,6 +29,7 @@ public class PlayerStats : MonoBehaviour
         {
             Object.Destroy(GameObject.FindWithTag("Player").GetComponent<CharacterController>());
             Object.Destroy(GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>());
+            currentHealth = 0;
         }
     }
         
