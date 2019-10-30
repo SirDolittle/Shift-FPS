@@ -7,6 +7,8 @@ public class HUDController : MonoBehaviour
 {
     public Text HealthIntDisplay;
     public Text AmmoIntDisplay;
+    public Image HealthBar;
+    private float HealthConv; 
     PlayerStats playerStats;
     WeaponController weaponController;
 
@@ -22,7 +24,13 @@ public class HUDController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HealthIntDisplay.text = playerStats.currentHealth.ToString();
+        UpdateHealthBar();
+        UpdateAmmoAmount();
+
+    }
+
+    void UpdateAmmoAmount()
+    {
 
         if (weaponController.isWeaponEquipped[0] == true)
         {
@@ -38,6 +46,11 @@ public class HUDController : MonoBehaviour
         }
     }
 
-
-
+    void UpdateHealthBar()
+    {
+        HealthConv = playerStats.currentHealth / 100f;
+        HealthBar.fillAmount = HealthConv;
+        HealthIntDisplay.text = playerStats.currentHealth.ToString();
+    }
 }
+
