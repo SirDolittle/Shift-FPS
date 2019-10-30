@@ -7,12 +7,14 @@ public class WeaponController : MonoBehaviour
     public GameObject currentWEquipped;
     public GameObject PlayerCamera;
     public GameObject[] weapons;
+    public Sprite[] WeaponDisplayImage;
     public float[] weaponAmmoAmounts;
     public bool[] isWeaponEquipped;
     public float[] currentAmmoAmounts;
     public float[] weaponFireRate;
     public int[] weaponDamageStats;
     public int[] impactForce;
+ 
 
     public bool isOutOfAmmo = false;
     public bool weaponHasFired = false;
