@@ -37,6 +37,7 @@ public class CharacterController : MonoBehaviour
     private CameraController cameraController;
     public CapsuleCollider capsuleCollider; // drag BoxCollider ref in editor
     private WeaponController weaponController;
+    private EndsState endsState;
 
 
     public Rigidbody mBody;
@@ -47,7 +48,8 @@ public class CharacterController : MonoBehaviour
     {
         playerCamera = GameObject.FindWithTag("PlayerCamera");
         cameraController = FindObjectOfType<CameraController>();
-        weaponController = FindObjectOfType<WeaponController>(); 
+        weaponController = FindObjectOfType<WeaponController>();
+        endsState = FindObjectOfType<EndsState>();
         myNormal = transform.up; // normal starts as character up direction
         myTransform = transform;
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
@@ -59,19 +61,20 @@ public class CharacterController : MonoBehaviour
     {
         // apply constant weight force according to character normal:
         GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
-        GravityUIControll();
+      
     }
 
     private void Update()
     {
        
         GroundDectection();
-        PlayerMovement();
-        UpdatePlayerForward();
-        PlayerShoot();
-       
-        if(Input.GetKey(KeyCode.H))
+
+        if (endsState.levelComplete == false)
         {
+            PlayerMovement();
+            UpdatePlayerForward();
+            PlayerShoot();
+            GravityUIControll();
 
         }
 
