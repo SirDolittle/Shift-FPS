@@ -6,11 +6,13 @@ public class ThrowingKnife : MonoBehaviour
 {
     PlayerStats playerStats;
     SkewardsController skewardsController;
+    private DamageIndication damageIndication;
     // Start is called before the first frame update
     private void Awake()
     {
         playerStats = FindObjectOfType<PlayerStats>();
         skewardsController = FindObjectOfType<SkewardsController>();
+        damageIndication = FindObjectOfType<DamageIndication>();
     }
 
     void Start()
@@ -29,6 +31,7 @@ public class ThrowingKnife : MonoBehaviour
         if(other.tag == ("Player"))
         {
             playerStats.currentHealth -= 5;
+            damageIndication.ShowDamageIndicator(); 
             Destroy(gameObject);
         } 
         else

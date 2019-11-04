@@ -201,6 +201,7 @@ public class WeaponController : MonoBehaviour
                     {
                         Debug.Log("Enemy Hit!");
                         hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[0];
+
                     }
                     else
                     if (hit.rigidbody != null)

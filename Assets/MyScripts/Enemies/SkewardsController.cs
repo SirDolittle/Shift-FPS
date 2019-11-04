@@ -30,6 +30,7 @@ public class SkewardsController : MonoBehaviour
     private GameObject player;
     private CharacterController characterController;
     private PlayerStats playerStats;
+    private DamageIndication damageIndication;
     private NavMeshAgent skewardNav;
     private GameObject prefabKnife;
 
@@ -39,6 +40,7 @@ public class SkewardsController : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         characterController = FindObjectOfType<CharacterController>();
         playerStats = FindObjectOfType<PlayerStats>();
+        damageIndication = FindObjectOfType<DamageIndication>();
     }
     void Start()
     {
@@ -160,6 +162,7 @@ public class SkewardsController : MonoBehaviour
         {
             inMelee = true;
             playerStats.currentHealth -= 15;
+            damageIndication.ShowDamageIndicator();
             StartCoroutine(MeleeRate());
         }
 
