@@ -19,26 +19,34 @@ public class EndsState : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-      
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (other.tag == "Player")
         {
-            screenFader.fade();
-            levelComplete = true;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                screenFader.fade();
+                levelComplete = true;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
         }
 
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        pressE.gameObject.SetActive(true);
+        if (other.tag == "Player")
+        {
+            pressE.gameObject.SetActive(true);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        pressE.gameObject.SetActive(false);
+        if (other.tag == "Player")
+        { 
+            pressE.gameObject.SetActive(false);
+        }
     }
 
 }

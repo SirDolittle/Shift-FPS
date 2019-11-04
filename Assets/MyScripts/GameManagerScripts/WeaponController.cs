@@ -26,6 +26,8 @@ public class WeaponController : MonoBehaviour
     public GameObject enemyHitName;
 
     private PlayerStats playerStats;
+    private ExplosiveBarrel explosiveBarrel;
+
 
     private bool isWeaponChanging = false;
 
@@ -33,6 +35,7 @@ public class WeaponController : MonoBehaviour
     void Start()
     {
         playerStats = FindObjectOfType<PlayerStats>();
+        explosiveBarrel = FindObjectOfType<ExplosiveBarrel>();
 
         isWeaponEquipped = new bool[3];
     
@@ -203,7 +206,11 @@ public class WeaponController : MonoBehaviour
                         hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[0];
 
                     }
-                    else
+                    else if (hit.collider.tag == "Explosive")
+                    {
+                        explosiveBarrel.barrelHP -= weaponDamageStats[0];
+                        explosiveBarrel.ExplodeCheck();
+                    } 
                     if (hit.rigidbody != null)
                     {
                         hit.rigidbody.AddForce(-hit.normal * impactForce[0]);
@@ -248,9 +255,13 @@ public class WeaponController : MonoBehaviour
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");
-                        hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth-= weaponDamageStats[1];
+                        hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[1];
                     }
-                    else
+                    else if (hit.collider.tag == "Explosive")
+                    {
+                        explosiveBarrel.barrelHP -= weaponDamageStats[1];
+                        explosiveBarrel.ExplodeCheck();
+                    }
                     if (hit.rigidbody != null) 
                     {
                         hit.rigidbody.AddForce(-hit.normal * impactForce[1]);
@@ -297,7 +308,12 @@ public class WeaponController : MonoBehaviour
                         Debug.Log("Enemy Hit!");
                         hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[2];
 
-                    } else 
+                    }
+                    else if (hit.collider.tag == "Explosive")
+                    {
+                        explosiveBarrel.barrelHP -= weaponDamageStats[2];
+                        explosiveBarrel.ExplodeCheck();
+                    }
                     if (hit.rigidbody != null)
                     {
                         hit.rigidbody.AddForce(-hit.normal * impactForce[2]);
