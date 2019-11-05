@@ -29,16 +29,7 @@ public class ExplosiveBarrel : MonoBehaviour
         if (barrelHP <= 0)
         {
             StartCoroutine(ExplodeTimer());
-            float t = 0;
-            
-            while (t > 1)
-            {
-                t += Time.deltaTime / 3;
-                Debug.Log(t);
-                gameObject.GetComponent<Renderer>().material.color = Color.Lerp(startingColor, Color.red, t);
-            }
-           
-            Debug.Log(t);
+            StartCoroutine(FadeColourIn());
            
         }
     }
@@ -100,5 +91,17 @@ public class ExplosiveBarrel : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public IEnumerator FadeColourIn()
+    {
+        float t = 0;
+        while (t < 1)
+        {
+            t += Time.deltaTime / 2;
+            gameObject.GetComponent<Renderer>().material.color = Color.Lerp(startingColor, Color.red, t);
+
+            yield return null;
+        }
+        yield return null;
+    }
 
 }

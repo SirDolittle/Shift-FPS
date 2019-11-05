@@ -24,7 +24,7 @@ public class DamageIndication : MonoBehaviour
         CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
         while (canvasGroup.alpha > 0)
         {
-            canvasGroup.alpha -= Time.deltaTime / 2;
+            canvasGroup.alpha -= Time.deltaTime / 3;
             canvasGroup.blocksRaycasts = true;
 
             yield return null;
