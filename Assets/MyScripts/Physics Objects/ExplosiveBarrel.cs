@@ -12,6 +12,7 @@ public class ExplosiveBarrel : MonoBehaviour
     public float ExplosionForce;
     public float ExplosionsLift;
 
+    private Color startingColor;
     PlayerStats playerStats;
     DamageIndication damageIndication;
 
@@ -19,16 +20,27 @@ public class ExplosiveBarrel : MonoBehaviour
     {
         playerStats = FindObjectOfType<PlayerStats>();
         damageIndication = FindObjectOfType<DamageIndication>();
+        startingColor = gameObject.GetComponent<Renderer>().material.color;
+
     }
 
     public void ExplodeCheck()
     {
-        if(barrelHP <= 0)
+        if (barrelHP <= 0)
         {
             StartCoroutine(ExplodeTimer());
+            float t = 0;
+            
+            while (t > 1)
+            {
+                t += Time.deltaTime / 3;
+                Debug.Log(t);
+                gameObject.GetComponent<Renderer>().material.color = Color.Lerp(startingColor, Color.red, t);
+            }
+           
+            Debug.Log(t);
+           
         }
-
-
     }
 
     void ExplodeEffects()
@@ -36,14 +48,12 @@ public class ExplosiveBarrel : MonoBehaviour
         GameObject player = GameObject.FindWithTag("Player");
         GameObject enemy = GameObject.FindWithTag("Enemy"); 
         float p_Distance = Vector3.Distance(player.transform.position, transform.position);
-        float e_Distance = Vector3.Distance(enemy.transform.position, transform.position);
+       
 
         float p_currentDistance = p_Distance / maxDistance;
-        float e_currentDistance = e_Distance / maxDistance;
 
         float p_damage = Mathf.Lerp(maxDamage, minDamage, p_currentDistance);
-        float e_damage = Mathf.Lerp(maxDamage, minDamage, e_currentDistance);
-
+   
 
         if (p_currentDistance <= 1)
         {
@@ -57,8 +67,13 @@ public class ExplosiveBarrel : MonoBehaviour
             SkewardsController skewardsController = col.GetComponent<SkewardsController>(); 
             if (skewardsController != null)
             {
+                float e_Distance = Vector3.Distance(col.transform.position, transform.position);
+                float e_currentDistance = e_Distance / maxDistance;
+                float e_damage = Mathf.Lerp(maxDamage, minDamage, e_currentDistance);
                 skewardsController.currentHealth -= (int)e_damage;
             }
+
+
                 
         }
 

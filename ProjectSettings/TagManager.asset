@@ -12,6 +12,7 @@ TagManager:
   - JumpEnd
   - Walkable
   - NavMesh
+  - Explosive
   layers:
   - Default
   - TransparentFX
