@@ -15,16 +15,14 @@ public class EnemyStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EnemyDeath();
+    
+        if (currentEnemyHealth <= 0)
+        {
+            currentEnemyHealth = 0;
+        }
     }
 
-    void EnemyDeath()
-    {
-        if(currentEnemyHealth <= 0)
-        {
-            Object.Destroy(this.gameObject);
-        }
-       
-    }
+
+   
 
 }

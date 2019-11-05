@@ -14,7 +14,9 @@ public class WeaponController : MonoBehaviour
     public float[] weaponFireRate;
     public int[] weaponDamageStats;
     public int[] impactForce;
- 
+
+    int layerMask = 1 << 11;
+    
 
     public bool isOutOfAmmo = false;
     public bool weaponHasFired = false;
@@ -36,6 +38,8 @@ public class WeaponController : MonoBehaviour
     {
         playerStats = FindObjectOfType<PlayerStats>();
         explosiveBarrel = FindObjectOfType<ExplosiveBarrel>();
+
+        layerMask = ~layerMask;
 
         isWeaponEquipped = new bool[3];
     
@@ -194,16 +198,17 @@ public class WeaponController : MonoBehaviour
                 Debug.Log("PISTOL FIRED");
                 currentAmmoAmounts[0] -= 1f;
                 weaponHasFired = true;
+               
                 RaycastHit hit;
                 Ray ray = new Ray (PlayerCamera.transform.position, PlayerCamera.transform.forward);
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) ; 
                 {
                     Debug.Log("Ray Casted");
                     Debug.Log("Ray tag =" + hit.collider.tag);
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");
-                        hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[0];
+                        hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[0];
 
                     }
                     else if (hit.collider.tag == "Explosive")
@@ -213,7 +218,7 @@ public class WeaponController : MonoBehaviour
                     } 
                     if (hit.rigidbody != null)
                     {
-                        hit.rigidbody.AddForce(-hit.normal * impactForce[0]);
+                        hit.rigidbody.AddForce(ray.direction * impactForce[0]);
                     }
 
                 } 
@@ -249,13 +254,13 @@ public class WeaponController : MonoBehaviour
                 weaponHasFired = true;
                 RaycastHit hit;
                 Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
                 {
                     Debug.Log("Ray tag =" + hit.collider.tag);
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");
-                        hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[1];
+                        hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[1];
                     }
                     else if (hit.collider.tag == "Explosive")
                     {
@@ -264,7 +269,7 @@ public class WeaponController : MonoBehaviour
                     }
                     if (hit.rigidbody != null) 
                     {
-                        hit.rigidbody.AddForce(-hit.normal * impactForce[1]);
+                        hit.rigidbody.AddForce(ray.direction * impactForce[1]);
                     }
 
                 }
@@ -300,13 +305,13 @@ public class WeaponController : MonoBehaviour
                 weaponHasFired = true;
                 RaycastHit hit;
                 Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
                 {
                     Debug.Log("Ray tag =" + hit.collider.tag);
                     if (hit.collider.tag == "Enemy")
                     {
                         Debug.Log("Enemy Hit!");
-                        hit.collider.gameObject.GetComponent<SkewardsController>().currentHealth -= weaponDamageStats[2];
+                        hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[2];
 
                     }
                     else if (hit.collider.tag == "Explosive")
@@ -316,7 +321,7 @@ public class WeaponController : MonoBehaviour
                     }
                     if (hit.rigidbody != null)
                     {
-                        hit.rigidbody.AddForce(-hit.normal * impactForce[2]);
+                        hit.rigidbody.AddForce(ray.direction * impactForce[2]);
                     }
 
                 }

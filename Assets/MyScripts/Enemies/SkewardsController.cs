@@ -7,8 +7,6 @@ public class SkewardsController : MonoBehaviour
 { 
     public int meleeDamage = 15;
     public int thowingKnifeDamage = 5;
-    public int maxHealth = 50;
-    public int currentHealth;
     public int throwingknifeAmmount;
     public float SkewardSightRange;
     public GameObject knifeThrowOrigin;
@@ -33,6 +31,7 @@ public class SkewardsController : MonoBehaviour
     private DamageIndication damageIndication;
     private NavMeshAgent skewardNav;
     private GameObject prefabKnife;
+    private EnemyStats enemyStats;
 
     void Awake()
     {
@@ -41,10 +40,10 @@ public class SkewardsController : MonoBehaviour
         characterController = FindObjectOfType<CharacterController>();
         playerStats = FindObjectOfType<PlayerStats>();
         damageIndication = FindObjectOfType<DamageIndication>();
+        enemyStats = FindObjectOfType<EnemyStats>();
     }
     void Start()
     {
-        currentHealth = maxHealth;
         myNormal = transform.up;
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
     }
@@ -113,7 +112,8 @@ public class SkewardsController : MonoBehaviour
 
     void DeathCheck()
     {
-        if(currentHealth <= 0)
+        
+        if(gameObject.GetComponent<EnemyStats>().currentEnemyHealth <= 0)
         {
             //play death animation 
             isSkewardDead = true;

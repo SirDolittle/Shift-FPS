@@ -55,13 +55,13 @@ public class ExplosiveBarrel : MonoBehaviour
         Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, maxDistance);
         foreach (Collider col in enemiesInRange)
         {
-            SkewardsController skewardsController = col.GetComponent<SkewardsController>(); 
-            if (skewardsController != null)
+            EnemyStats enemyStats = col.GetComponent<EnemyStats>(); 
+            if (enemyStats != null)
             {
                 float e_Distance = Vector3.Distance(col.transform.position, transform.position);
                 float e_currentDistance = e_Distance / maxDistance;
                 float e_damage = Mathf.Lerp(maxDamage, minDamage, e_currentDistance);
-                skewardsController.currentHealth -= (int)e_damage;
+                enemyStats.currentEnemyHealth -= (int)e_damage;
             }
 
 
