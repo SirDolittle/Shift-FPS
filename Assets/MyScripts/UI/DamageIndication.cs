@@ -20,7 +20,6 @@ public class DamageIndication : MonoBehaviour
 
     public IEnumerator DoFadeOut()
     {
-        Debug.Log("FadeOutCalled");
         CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
         while (canvasGroup.alpha > 0)
         {
