@@ -6,7 +6,9 @@ public class EndScreenControl : MonoBehaviour
 {
     public void RestartScene()
     {
+       
         SceneManager.LoadScene("TestScene");
         Debug.Log("Scene Called");
+        Physics.gravity = new Vector3(0, -9.8f, 0);
     }
 }

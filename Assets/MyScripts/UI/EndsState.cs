@@ -5,13 +5,10 @@ using UnityEngine.UI;
 public class EndsState : MonoBehaviour
 {
     public bool levelComplete = false;
-    ScreenFader screenFader;
+    public Canvas endCanvas;
     public Text pressE;
 
-    private void Awake()
-    {
-        screenFader = FindObjectOfType<ScreenFader>();
-    }
+
 
     //if the player enters the trigger 
     //show end state UI 
@@ -24,7 +21,8 @@ public class EndsState : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                screenFader.fade();
+                endCanvas.gameObject.SetActive(true);
+                endCanvas.gameObject.GetComponent<ScreenFader>().fade();
                 levelComplete = true;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;

@@ -376,7 +376,7 @@ MonoBehaviour:
   turretEnd: {fileID: 1542911729603837250}
   plasmaPrefab: {fileID: 6786359283950886793, guid: 974a5c55de22a7749b1a78cdc88ae697,
     type: 3}
-  fireRate: 4
+  fireRate: 8
   maxRange: 25
   speed: 50
 --- !u!54 &5174125958938983557

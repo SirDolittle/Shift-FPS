@@ -6,7 +6,11 @@ public class PlayerStats : MonoBehaviour
 {
     public int startingPlayerHealth = 100;
     public int currentHealth;
+    public Canvas deathCanvas;
+
+
     private bool isPlayerDead;
+
 
 
     // Start is called before the first frame update
@@ -27,6 +31,10 @@ public class PlayerStats : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            deathCanvas.gameObject.SetActive(true);
+            deathCanvas.gameObject.GetComponent<ScreenFader>().fade(); 
             Object.Destroy(GameObject.FindWithTag("Player").GetComponent<CharacterController>());
             Object.Destroy(GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>());
             currentHealth = 0;
@@ -34,6 +42,3 @@ public class PlayerStats : MonoBehaviour
     }
         
     }
-
-
-    //currentAmmoAmouts shows ammo for all weapons in the game
