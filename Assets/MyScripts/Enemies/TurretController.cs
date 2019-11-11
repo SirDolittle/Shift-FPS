@@ -38,11 +38,6 @@ public class TurretController : MonoBehaviour
         }
     }
 
-    /*Turret to do list:
-     * Fire projectile 
-     * Range check 
-     * line of sght check. 
-     */
 
      void DeathCheck()
     {
