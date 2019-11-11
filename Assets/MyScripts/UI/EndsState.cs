@@ -8,12 +8,6 @@ public class EndsState : MonoBehaviour
     public Canvas endCanvas;
     public Text pressE;
 
-
-
-    //if the player enters the trigger 
-    //show end state UI 
-    //Freeze time 
-
     private void OnTriggerStay(Collider other)
     {
 

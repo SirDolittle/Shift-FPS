@@ -7,7 +7,7 @@ public class PlayerStats : MonoBehaviour
     public int startingPlayerHealth = 100;
     public int currentHealth;
     public Canvas deathCanvas;
-
+    public bool[] KeysEquipped; 
 
     private bool isPlayerDead;
 

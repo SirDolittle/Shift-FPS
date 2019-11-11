@@ -81,7 +81,7 @@ public class TurretController : MonoBehaviour
     void FireAtPlayer()
     {
         plasmaBall = Instantiate(plasmaPrefab, turretEnd.transform.position, transform.rotation);
-        plasmaBall.GetComponent<Rigidbody>().AddForce(transform.forward * 2000);
+        plasmaBall.GetComponent<Rigidbody>().AddForce(transform.forward * 3000);
     }
 
   
