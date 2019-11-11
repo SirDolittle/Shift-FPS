@@ -25,6 +25,7 @@ public class TurretController : MonoBehaviour
         enemyStats = FindObjectOfType<EnemyStats>();
         GetComponent<Collider>().attachedRigidbody.useGravity = false;
         GetComponent<Collider>().attachedRigidbody.isKinematic = true;
+        player = GameObject.FindWithTag("Player");
     }
 
     // Update is called once per frame

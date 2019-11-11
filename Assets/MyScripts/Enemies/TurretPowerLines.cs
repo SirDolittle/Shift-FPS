@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurretPowerLines : MonoBehaviour
 {
     public GameObject[] attatchedTurrets;
     public GameObject[] attatchedTurretGlow;
-    public Material disactive; 
+    public Material disactive;
+    public Text pressE; 
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,8 @@ public class TurretPowerLines : MonoBehaviour
     {
         if(other.tag == "Player" && Input.GetKeyDown(KeyCode.E))
         {
+            
+
             foreach (GameObject enemy in attatchedTurrets)
             {
                 enemy.GetComponent<TurretController>().enabled = false;
@@ -36,5 +40,20 @@ public class TurretPowerLines : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            pressE.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            pressE.gameObject.SetActive(false);
+        }
+    }
 
 }
