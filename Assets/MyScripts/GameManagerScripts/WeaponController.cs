@@ -26,7 +26,6 @@ public class WeaponController : MonoBehaviour
     public GameObject enemyHitName;
 
     private PlayerStats playerStats;
-    private ExplosiveBarrel explosiveBarrel;
 
 
     private bool isWeaponChanging = false;
@@ -35,7 +34,6 @@ public class WeaponController : MonoBehaviour
     void Start()
     {
         playerStats = FindObjectOfType<PlayerStats>();
-        explosiveBarrel = FindObjectOfType<ExplosiveBarrel>();
 
         isWeaponEquipped = new bool[3];
     
@@ -210,8 +208,8 @@ public class WeaponController : MonoBehaviour
                     }
                     else if (hit.collider.tag == "Explosive")
                     {
-                        explosiveBarrel.barrelHP -= weaponDamageStats[0];
-                        explosiveBarrel.ExplodeCheck();
+                        hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[0];
+                        hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
                     } 
                     if (hit.rigidbody != null)
                     {
@@ -262,8 +260,8 @@ public class WeaponController : MonoBehaviour
                     }
                     else if (hit.collider.tag == "Explosive")
                     {
-                        explosiveBarrel.barrelHP -= weaponDamageStats[1];
-                        explosiveBarrel.ExplodeCheck();
+                        hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[1];
+                        hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
                     }
                     if (hit.rigidbody != null) 
                     {
@@ -315,8 +313,8 @@ public class WeaponController : MonoBehaviour
                     }
                     else if (hit.collider.tag == "Explosive")
                     {
-                        explosiveBarrel.barrelHP -= weaponDamageStats[2];
-                        explosiveBarrel.ExplodeCheck();
+                        hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[2];
+                        hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
                     }
                     if (hit.rigidbody != null)
                     {
