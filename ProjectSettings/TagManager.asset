@@ -13,6 +13,7 @@ TagManager:
   - Walkable
   - NavMesh
   - Explosive
+  - UI
   layers:
   - Default
   - TransparentFX

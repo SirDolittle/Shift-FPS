@@ -72,7 +72,7 @@ public class SkewardsController : MonoBehaviour
             skewardNav.enabled = false;
             myNormal = characterController.hitNormal;
             myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
-            transform.LookAt(player.transform.position, myNormal);
+            
         }
         else if (isSkewardDead == false && playerInSight == true)
         {
@@ -132,12 +132,15 @@ public class SkewardsController : MonoBehaviour
         } 
         if(playerDist >= 5 && playerDist <=15 && isSkewardDead == false && isThrowing == false && throwingknifeAmmount >= 1)
         {
-            Debug.Log("Throw Knife");
-            isThrowing = true;
-            throwingknifeAmmount -= 1;
+
+            StopAndLookAtPlayer();
             ThrowKnife();
             StartCoroutine(ThrowRate());
            
+        }
+        else if (playerDist < 5 || playerDist > 15)
+        {
+            gameObject.GetComponent<NavMeshAgent>().speed = 8;
         }
 
         IEnumerator ThrowRate()
@@ -149,13 +152,22 @@ public class SkewardsController : MonoBehaviour
 
     }
 
-     void ThrowKnife()
+    void ThrowKnife()
     {
-        
+        Debug.Log("Throw Knife");
+        isThrowing = true;
+        throwingknifeAmmount -= 1;
         prefabKnife = Instantiate(throwingKnifeOBJ, knifeThrowOrigin.transform.position, transform.rotation);
         prefabKnife.GetComponent<Rigidbody>().AddForce(transform.forward * 2000);
 
     }
+
+    void StopAndLookAtPlayer()
+    {
+        gameObject.GetComponent<NavMeshAgent>().speed = 0;
+        transform.LookAt(player.transform, myNormal);
+    }
+
 
     private void OnTriggerStay(Collider other)
     {
