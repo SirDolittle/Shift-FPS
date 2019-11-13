@@ -30,16 +30,18 @@ public class DoorButtonTwo : MonoBehaviour
         {
             if (doorOpen == false)
             {
-                Debug.Log("Door Opened");
+                Debug.Log("Button pressed");
                 sidePillar.EnableKeyword("_EMISSION");
-                buttonTracker.buttonsPressed[1] = true; 
-                doorOpen = true;
+                buttonTracker.buttonsPressed[1] = true;
+
                 if (buttonTracker.buttonsPressed[0] == true && buttonTracker.buttonsPressed[1] == true)
                 {
+                    Debug.Log("Door Opened");
+                    doorOpen = true;
                     StartCoroutine(buttonDoor.OpenDoor());
                 }
             }
-            else
+            else 
             {
                 Debug.Log("Door Closed");
                 StartCoroutine(buttonDoor.CloseDoor());

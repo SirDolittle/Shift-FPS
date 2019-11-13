@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class PinkDoorController : MonoBehaviour
 {
-    public Canvas endCanvas;
     public Text pressE;
+    public Text KeycardRequired;
     public bool doorOpen = false;
     private Vector3 currentPosition;
     private Vector3 openPosition;
@@ -34,7 +34,14 @@ public class PinkDoorController : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            pressE.gameObject.SetActive(true);
+           
+            if(playerStats.KeysEquipped[0] == false)
+            {
+              KeycardRequired.gameObject.SetActive(true);
+            } else
+            {
+                pressE.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -42,7 +49,14 @@ public class PinkDoorController : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            pressE.gameObject.SetActive(false);
+           
+            if (playerStats.KeysEquipped[0] == false)
+            {
+                KeycardRequired.gameObject.SetActive(false);
+            } else
+            {
+                pressE.gameObject.SetActive(false);
+            }
         }
     }
 

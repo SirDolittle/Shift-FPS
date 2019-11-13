@@ -47,11 +47,8 @@ public class DeckendsController : MonoBehaviour
     private void FixedUpdate()
     {
        GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
-    }
 
-    void Update()
-    {
-        if(isSkewardDead == false)
+        if (isSkewardDead == false)
         {
             UpdateForward();
         }
@@ -59,6 +56,11 @@ public class DeckendsController : MonoBehaviour
         GroundDectection();
         DeathCheck();
         RangeCheck();
+    }
+
+    void Update()
+    {
+       
     }
 
     void GravityChangeCheck()

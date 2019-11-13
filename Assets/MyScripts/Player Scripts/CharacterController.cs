@@ -37,7 +37,7 @@ public class CharacterController : MonoBehaviour
     private CameraController cameraController;
     public CapsuleCollider capsuleCollider; // drag BoxCollider ref in editor
     private WeaponController weaponController;
-    private EndsState endsState;
+    private TriggerEndState endsState;
 
 
     public Rigidbody mBody;
@@ -49,7 +49,7 @@ public class CharacterController : MonoBehaviour
         playerCamera = GameObject.FindWithTag("PlayerCamera");
         cameraController = FindObjectOfType<CameraController>();
         weaponController = FindObjectOfType<WeaponController>();
-        endsState = FindObjectOfType<EndsState>();
+        endsState = FindObjectOfType<TriggerEndState>();
         myNormal = transform.up; // normal starts as character up direction
         myTransform = transform;
         GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
@@ -61,22 +61,22 @@ public class CharacterController : MonoBehaviour
     {
         // apply constant weight force according to character normal:
         GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
-      
-    }
-
-    private void Update()
-    {
-       
         GroundDectection();
 
         if (endsState.levelComplete == false)
         {
-            PlayerMovement();
             UpdatePlayerForward();
             PlayerShoot();
             GravityUIControll();
+            PlayerMovement();
 
         }
+
+    }
+
+    private void Update()
+    {
+
 
     }
 
@@ -246,8 +246,6 @@ public class CharacterController : MonoBehaviour
         // jump to wall
         myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
         jumpingToWall = true; // signal it's jumping to wall
-        //Vector3 myForward = Vector3.Cross(myTransform.right, hitNormal);
-        
 
         StartCoroutine(jumpTime());
         //jumptime

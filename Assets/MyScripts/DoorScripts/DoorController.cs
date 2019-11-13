@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class DoorController : MonoBehaviour
 {
-    public Canvas endCanvas;
     public Text pressE;
     public bool doorOpen = false;
     private Vector3 currentPosition;
