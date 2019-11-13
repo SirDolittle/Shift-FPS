@@ -27,9 +27,9 @@ TagManager:
   - Enemy
   - NavMesh
   - EnemyPart
-  - 
-  - 
-  - 
+  - ObjectiveMarker
+  - Physics Object
+  - Door
   - 
   - 
   - 
