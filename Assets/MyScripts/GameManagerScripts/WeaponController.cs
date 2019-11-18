@@ -14,6 +14,7 @@ public class WeaponController : MonoBehaviour
     public float[] weaponFireRate;
     public int[] weaponDamageStats;
     public int[] impactForce;
+    public bool[] weaponInInventory; 
     
 
     public bool isOutOfAmmo = false;
@@ -41,7 +42,7 @@ public class WeaponController : MonoBehaviour
         currentAmmoAmounts[0] = weaponAmmoAmounts[0];
         currentAmmoAmounts[1] = weaponAmmoAmounts[1];
         currentAmmoAmounts[2] = weaponAmmoAmounts[2];
-        StartingWeapon();
+       StartingWeapon();
 
     }
 
@@ -51,13 +52,6 @@ public class WeaponController : MonoBehaviour
         EquipWeapon();
     }
 
-    void playerWeaponPickUp()
-    {
-        //when the player walks over a dropped weapon
-        //either 
-        //adds the weapon into a new weapon slot
-        //adds ammo to the ammo count
-    }
 
     public void Fire()
     {
@@ -84,16 +78,13 @@ public class WeaponController : MonoBehaviour
         currentWEquipped = levelStartWeapon;
         currentWEquipped = Instantiate(currentWEquipped, playerWSlot.transform.position, Quaternion.identity) as GameObject;
         currentWEquipped.transform.parent = GameObject.FindWithTag("PlayerCamera").transform;
+        weaponInInventory[0] = true; 
         isWeaponEquipped[0] = true;
         isWeaponEquipped[1] = false;
         isWeaponEquipped[2] = false;
 
     }
 
-    void CurrentCarryWeapons()
-    {
-        //stores all the weapons the player is currently carrying 
-    }
 
     void EquipWeapon()
     {
@@ -106,7 +97,7 @@ public class WeaponController : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && weaponInInventory[0] == true)
         {
             if (currentAmmoAmounts[0] <= weaponAmmoAmounts[0])
             {
@@ -116,7 +107,6 @@ public class WeaponController : MonoBehaviour
             {
                 isOutOfAmmo = true;
             }
-
             Object.Destroy(currentWEquipped);
             currentWEquipped = weapons[0];
             isWeaponChanging = true;
@@ -125,17 +115,16 @@ public class WeaponController : MonoBehaviour
             isWeaponEquipped[2] = false;
 
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && weaponInInventory[1] == true)
         {
             if (currentAmmoAmounts[1] <= weaponAmmoAmounts[1])
             {
                 isOutOfAmmo = false;
-            }
+            } 
             if (currentAmmoAmounts[1] <= 0)
             {
                 isOutOfAmmo = true;
             }
-
             Object.Destroy(currentWEquipped);
             currentWEquipped = weapons[1];
             isWeaponChanging = true;
@@ -145,7 +134,7 @@ public class WeaponController : MonoBehaviour
 
 
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(KeyCode.Alpha3) &&  weaponInInventory[2] == true)
         {
             if (currentAmmoAmounts[2] <= weaponAmmoAmounts[2])
             {
@@ -186,43 +175,42 @@ public class WeaponController : MonoBehaviour
         else
         {
             StartCoroutine(PistolFireRate());
+        }
+       
+    }
 
-            IEnumerator PistolFireRate()
+    IEnumerator PistolFireRate()
+    {
+        Debug.Log("PISTOL FIRED");
+        currentAmmoAmounts[0] -= 1f;
+        weaponHasFired = true;
+
+        RaycastHit hit;
+        Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+
+            Debug.Log("Ray tag =" + hit.collider.tag);
+            if (hit.collider.tag == "Enemy")
             {
-                Debug.Log("PISTOL FIRED");
-                currentAmmoAmounts[0] -= 1f;
-                weaponHasFired = true;
-               
-                RaycastHit hit;
-                Ray ray = new Ray (PlayerCamera.transform.position, PlayerCamera.transform.forward);
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity));
-                {
-                    
-                    Debug.Log("Ray tag =" + hit.collider.tag);
-                    if (hit.collider.tag == "Enemy")
-                    {
-                        Debug.Log("Enemy Hit!");
-                        hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[0];
-                        hit.collider.GetComponentInParent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[0];
+                Debug.Log("Enemy Hit!");
+                hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[0];
+                hit.collider.GetComponentInParent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[0];
 
-                    }
-                    else if (hit.collider.tag == "Explosive")
-                    {
-                        hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[0];
-                        hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
-                    } 
-                    if (hit.rigidbody != null)
-                    {
-                        hit.rigidbody.AddForce(ray.direction * impactForce[0]);
-                    }
-
-                } 
-                yield return new WaitForSeconds(weaponFireRate[0]);
-                weaponHasFired = false;
+            }
+            else if (hit.collider.tag == "Explosive")
+            {
+                hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[0];
+                hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
+            }
+            if (hit.rigidbody != null)
+            {
+                hit.rigidbody.AddForce(ray.direction * impactForce[0]);
             }
 
         }
-        //Damage
+        yield return new WaitForSeconds(weaponFireRate[0]);
+        weaponHasFired = false;
     }
 
     void RifleStats()
@@ -241,40 +229,40 @@ public class WeaponController : MonoBehaviour
         else
         {
             StartCoroutine(RifleFireRate());
-
-            IEnumerator RifleFireRate()
-            {
-                Debug.Log("Rifle FIRED");
-                currentAmmoAmounts[1] -= 1f;
-                weaponHasFired = true;
-                RaycastHit hit;
-                Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                {
-                    Debug.Log("Ray tag =" + hit.collider.tag);
-                    if (hit.collider.tag == "Enemy")
-                    {
-                        Debug.Log("Enemy Hit!");
-                        hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[1];
-                        hit.collider.GetComponentInParent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[1];
-                    }
-                    else if (hit.collider.tag == "Explosive")
-                    {
-                        hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[1];
-                        hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
-                    }
-                    if (hit.rigidbody != null) 
-                    {
-                        hit.rigidbody.AddForce(ray.direction * impactForce[1]);
-                    }
-
-                }
-                yield return new WaitForSeconds(weaponFireRate[1]);
-                weaponHasFired = false;
-
-            }
         }
         
+    }
+
+    IEnumerator RifleFireRate()
+    {
+        Debug.Log("Rifle FIRED");
+        currentAmmoAmounts[1] -= 1f;
+        weaponHasFired = true;
+        RaycastHit hit;
+        Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            Debug.Log("Ray tag =" + hit.collider.tag);
+            if (hit.collider.tag == "Enemy")
+            {
+                Debug.Log("Enemy Hit!");
+                hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[1];
+                hit.collider.GetComponentInParent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[1];
+            }
+            else if (hit.collider.tag == "Explosive")
+            {
+                hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[1];
+                hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
+            }
+            if (hit.rigidbody != null)
+            {
+                hit.rigidbody.AddForce(ray.direction * impactForce[1]);
+            }
+
+        }
+        yield return new WaitForSeconds(weaponFireRate[1]);
+        weaponHasFired = false;
+
     }
 
     void MGStats()
@@ -293,41 +281,40 @@ public class WeaponController : MonoBehaviour
         else
         {
             StartCoroutine(MGFireRate());
-
-            IEnumerator MGFireRate()
-            {
-                Debug.Log("MG FIRED");
-                currentAmmoAmounts[2] -= 1f;
-                weaponHasFired = true;
-                RaycastHit hit;
-                Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                {
-                    Debug.Log("Ray tag =" + hit.collider.tag);
-                    if (hit.collider.tag == "Enemy")
-                    {
-                        Debug.Log("Enemy Hit!");
-                        hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[2];
-                         hit.collider.GetComponentInParent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[2];
-
-                    }
-                    else if (hit.collider.tag == "Explosive")
-                    {
-                        hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[2];
-                        hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
-                    }
-                    if (hit.rigidbody != null)
-                    {
-                        hit.rigidbody.AddForce(ray.direction * impactForce[2]);
-                    }
-
-                }
-                yield return new WaitForSeconds(weaponFireRate[2]);
-                weaponHasFired = false;
-
-            }
         }
        
+    }
+    IEnumerator MGFireRate()
+    {
+        Debug.Log("MG FIRED");
+        currentAmmoAmounts[2] -= 1f;
+        weaponHasFired = true;
+        RaycastHit hit;
+        Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            Debug.Log("Ray tag =" + hit.collider.tag);
+            if (hit.collider.tag == "Enemy")
+            {
+                Debug.Log("Enemy Hit!");
+                hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[2];
+                hit.collider.GetComponentInParent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[2];
+
+            }
+            else if (hit.collider.tag == "Explosive")
+            {
+                hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[2];
+                hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
+            }
+            if (hit.rigidbody != null)
+            {
+                hit.rigidbody.AddForce(ray.direction * impactForce[2]);
+            }
+
+        }
+        yield return new WaitForSeconds(weaponFireRate[2]);
+        weaponHasFired = false;
+
     }
 
 }

@@ -80,6 +80,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyHealth: 100
   currentEnemyHealth: 0
+  E_healthPrefab: {fileID: 2392550973341684013, guid: 91af2138b580c7442bd88d0ab776f031,
+    type: 3}
+  spawnhealth: 0
 --- !u!65 &5174125958322667650
 BoxCollider:
   m_ObjectHideFlags: 0

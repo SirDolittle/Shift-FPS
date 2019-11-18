@@ -33,11 +33,12 @@ public class PlasmaBall : MonoBehaviour
             damageIndication.ShowDamageIndicator();
             Destroy(gameObject);
         }
-        else
+        else if (other.tag == "PickUp")
+        {
+            
+        } else
         {
             Destroy(gameObject);
-
-
         }
 
     }

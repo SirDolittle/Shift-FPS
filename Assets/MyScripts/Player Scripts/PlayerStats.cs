@@ -34,10 +34,13 @@ public class PlayerStats : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             deathCanvas.gameObject.SetActive(true);
-            deathCanvas.gameObject.GetComponent<ScreenFader>().fade(); 
+            deathCanvas.gameObject.GetComponent<ScreenFader>().fade();
             Object.Destroy(GameObject.FindWithTag("Player").GetComponent<CharacterController>());
             Object.Destroy(GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>());
             currentHealth = 0;
+        } else if(currentHealth > startingPlayerHealth)
+        {
+            currentHealth = startingPlayerHealth; 
         }
     }
         

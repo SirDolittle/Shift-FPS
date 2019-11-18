@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 6382692859930034868}
   - component: {fileID: 108240122490631977}
   - component: {fileID: 2603488783076760979}
-  m_Layer: 0
-  m_Name: Rifle
-  m_TagString: Untagged
+  - component: {fileID: -2583671764088439321}
+  - component: {fileID: 9033803433553552151}
+  m_Layer: 15
+  m_Name: Rifle PickUp
+  m_TagString: PickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7468fb5ceca86674bb0c4cb0e8085a43, type: 2}
+  - {fileID: 2100000, guid: d231f286dfd2948409f3afad93e0deec, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,3 +80,28 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &-2583671764088439321
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5292650649938491897}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.26222, y: 1.7471602, z: 1.7471601}
+  m_Center: {x: 0.028716497, y: 0, z: 0}
+--- !u!114 &9033803433553552151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5292650649938491897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cb86cc973370dc44a7b7e8d4b59be0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
