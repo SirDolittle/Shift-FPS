@@ -27,14 +27,25 @@ public class WeaponController : MonoBehaviour
     public GameObject enemyHitName;
 
     private PlayerStats playerStats;
+    private PistolFire pistolFire;
+    private RifleFire rifleFire;
+    private MGFire mGFire;
 
 
     private bool isWeaponChanging = false;
+
+    private void Awake()
+    {
+        pistolFire = FindObjectOfType<PistolFire>();
+        rifleFire = FindObjectOfType<RifleFire>();
+        mGFire = FindObjectOfType<MGFire>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         playerStats = FindObjectOfType<PlayerStats>();
+
 
         isWeaponEquipped = new bool[3];
     
@@ -175,6 +186,7 @@ public class WeaponController : MonoBehaviour
         else
         {
             StartCoroutine(PistolFireRate());
+            pistolFire.PlayPistolSound();
         }
        
     }
@@ -184,6 +196,7 @@ public class WeaponController : MonoBehaviour
         Debug.Log("PISTOL FIRED");
         currentAmmoAmounts[0] -= 1f;
         weaponHasFired = true;
+        
 
         RaycastHit hit;
         Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
@@ -229,6 +242,7 @@ public class WeaponController : MonoBehaviour
         else
         {
             StartCoroutine(RifleFireRate());
+            rifleFire.PlayRifleSound();
         }
         
     }
@@ -238,6 +252,7 @@ public class WeaponController : MonoBehaviour
         Debug.Log("Rifle FIRED");
         currentAmmoAmounts[1] -= 1f;
         weaponHasFired = true;
+   
         RaycastHit hit;
         Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
@@ -281,6 +296,7 @@ public class WeaponController : MonoBehaviour
         else
         {
             StartCoroutine(MGFireRate());
+            mGFire.PlayMGSound();
         }
        
     }
@@ -289,6 +305,7 @@ public class WeaponController : MonoBehaviour
         Debug.Log("MG FIRED");
         currentAmmoAmounts[2] -= 1f;
         weaponHasFired = true;
+
         RaycastHit hit;
         Ray ray = new Ray(PlayerCamera.transform.position, PlayerCamera.transform.forward);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))

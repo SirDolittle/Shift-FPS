@@ -32,6 +32,7 @@ public class CharacterController : MonoBehaviour
     private bool isGrounded;
     public bool jumpingToWall = false; // flag &quot;I'm jumping to wall&quot;
     public bool gravityShift = false;
+    private bool isPlayingSound; 
 
     public Transform myTransform;
     private CameraController cameraController;
@@ -39,7 +40,8 @@ public class CharacterController : MonoBehaviour
     private WeaponController weaponController;
     private TriggerEndState endsState;
     private p_GravityShiftStart p_GravityShiftStart;
-    private p_GravityShiftStop p_GravityShiftStop; 
+    private p_GravityShiftStop p_GravityShiftStop;
+    private FootSteps footSteps;
 
 
     public Rigidbody mBody;
@@ -53,6 +55,7 @@ public class CharacterController : MonoBehaviour
         weaponController = FindObjectOfType<WeaponController>();
         p_GravityShiftStart = FindObjectOfType<p_GravityShiftStart>();
         p_GravityShiftStop = FindObjectOfType<p_GravityShiftStop>();
+        footSteps = FindObjectOfType<FootSteps>(); 
         endsState = FindObjectOfType<TriggerEndState>();
         myNormal = transform.up; // normal starts as character up direction
         myTransform = transform;
@@ -80,17 +83,7 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            p_GravityShiftStart.PlayShiftStartSound();
-            Debug.Log("Start shift sound");
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            p_GravityShiftStop.PlayShiftStopSound();
-            Debug.Log("Stop shift sound");
-        }
-
+        AudioController(); 
     }
 
     private void PlayerShoot()
@@ -123,8 +116,7 @@ public class CharacterController : MonoBehaviour
             Time.timeScale = 0.5f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-            //p_GravityShiftStart.PlayShiftStartSound();
-            //Play gravity shift start sound 
+            
         }
         else
         {
@@ -135,8 +127,6 @@ public class CharacterController : MonoBehaviour
             cameraController.CameraYRotation();
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-            //p_GravityShiftStop.PlayShiftStopSound();
-            //play gravity shift stop sound
         }
 
         if (Input.GetButtonDown("Jump"))
@@ -250,6 +240,30 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+
+    private void AudioController()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            p_GravityShiftStart.PlayShiftStartSound();
+            Debug.Log("Start shift sound");
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            p_GravityShiftStop.PlayShiftStopSound();
+            Debug.Log("Stop shift sound");
+        }
+
+        if (Input.GetButton("Vertical") && isGrounded == true || Input.GetButton("Horizontal") && isGrounded == true)
+        {
+            footSteps.PlayFootStepsSound();
+        }
+        else
+        {
+            footSteps.StopFootStepSound(); 
+        }
+
+    }
     private void JumpToWall()
     {
         // jump to wall
