@@ -8,7 +8,8 @@ public class EnemyHealthPickup : MonoBehaviour
     PlayerStats playerStats;
     GameObject player;
     public float h_speed;
-    // Start is called before the first frame update
+    HealthInducation healthInducation;
+    PlayHealthNoise playHealthNoise;    // Start is called before the first frame update
 
     private void FixedUpdate()
     {
@@ -18,6 +19,8 @@ public class EnemyHealthPickup : MonoBehaviour
     void Start()
     {
         playerStats = FindObjectOfType<PlayerStats>();
+        healthInducation = FindObjectOfType<HealthInducation>();
+        playHealthNoise = FindObjectOfType<PlayHealthNoise>();
         player = GameObject.FindWithTag("Player"); 
     }
 
@@ -27,6 +30,8 @@ public class EnemyHealthPickup : MonoBehaviour
         {
             playerStats.currentHealth += HealthAmount;
             Object.Destroy(this.gameObject);
+            healthInducation.ShowHealthIndicator();
+            playHealthNoise.PlayHealthSound();
         }
     }
 

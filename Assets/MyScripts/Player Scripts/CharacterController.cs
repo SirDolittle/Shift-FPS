@@ -38,6 +38,8 @@ public class CharacterController : MonoBehaviour
     public CapsuleCollider capsuleCollider; // drag BoxCollider ref in editor
     private WeaponController weaponController;
     private TriggerEndState endsState;
+    private p_GravityShiftStart p_GravityShiftStart;
+    private p_GravityShiftStop p_GravityShiftStop; 
 
 
     public Rigidbody mBody;
@@ -49,6 +51,8 @@ public class CharacterController : MonoBehaviour
         playerCamera = GameObject.FindWithTag("PlayerCamera");
         cameraController = FindObjectOfType<CameraController>();
         weaponController = FindObjectOfType<WeaponController>();
+        p_GravityShiftStart = FindObjectOfType<p_GravityShiftStart>();
+        p_GravityShiftStop = FindObjectOfType<p_GravityShiftStop>();
         endsState = FindObjectOfType<TriggerEndState>();
         myNormal = transform.up; // normal starts as character up direction
         myTransform = transform;
@@ -76,7 +80,16 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            p_GravityShiftStart.PlayShiftStartSound();
+            Debug.Log("Start shift sound");
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            p_GravityShiftStop.PlayShiftStopSound();
+            Debug.Log("Stop shift sound");
+        }
 
     }
 
@@ -106,30 +119,24 @@ public class CharacterController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             shiftKeyHeld = true;
-        }
-        else
-        {
-            shiftKeyHeld = false;
-        }
-
-
-        if (shiftKeyHeld == true)
-        {
             gravityShiftUI.SetActive(true);
             Time.timeScale = 0.5f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-            //call GravityUIController script
+            //p_GravityShiftStart.PlayShiftStartSound();
+            //Play gravity shift start sound 
         }
         else
         {
+            shiftKeyHeld = false;
             gravityShiftUI.SetActive(false);
             Time.timeScale = 1.0f;
             myTransform.Rotate(0, Input.GetAxis("Mouse X") * turnSpeed * Time.deltaTime, 0); // Rotates the player model and camera
             cameraController.CameraYRotation();
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-
+            //p_GravityShiftStop.PlayShiftStopSound();
+            //play gravity shift stop sound
         }
 
         if (Input.GetButtonDown("Jump"))
@@ -139,6 +146,8 @@ public class CharacterController : MonoBehaviour
               GetComponent<Rigidbody>().velocity += jumpSpeed * myNormal;
             }
         }
+
+        
     }
 
     public void GravityForwards()

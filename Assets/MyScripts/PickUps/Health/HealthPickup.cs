@@ -6,10 +6,14 @@ public class HealthPickup : MonoBehaviour
 {
     public int HealthAmount;
     PlayerStats playerStats;
+    HealthInducation healthInducation;
+    PlayHealthNoise playHealthNoise;
     // Start is called before the first frame update
     void Start()
     {
-        playerStats = FindObjectOfType<PlayerStats>(); 
+        playerStats = FindObjectOfType<PlayerStats>();
+        healthInducation = FindObjectOfType<HealthInducation>();
+        playHealthNoise = FindObjectOfType<PlayHealthNoise>(); 
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,6 +22,9 @@ public class HealthPickup : MonoBehaviour
         {
             playerStats.currentHealth += HealthAmount;
             Object.Destroy(this.gameObject);
+            healthInducation.ShowHealthIndicator();
+            playHealthNoise.PlayHealthSound(); 
+
         }
     }
 

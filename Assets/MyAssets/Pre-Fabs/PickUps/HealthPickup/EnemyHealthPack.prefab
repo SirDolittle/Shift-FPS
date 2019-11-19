@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6965886998182410939}
   - component: {fileID: 6965886998182410943}
   m_Layer: 15
-  m_Name: Small HealthPack
+  m_Name: EnemyHealthPack
   m_TagString: PickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
