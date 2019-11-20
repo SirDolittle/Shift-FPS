@@ -31,7 +31,8 @@ public class WeaponController : MonoBehaviour
     private RifleFire rifleFire;
     private MGFire mGFire;
     private WeaponNotActiveSound weaponNotActiveSound;
-    private OutOfAmmo outOfAmmo; 
+    private OutOfAmmo outOfAmmo;
+    private WeaponSwapSound weaponSwapSound; 
 
 
     private bool isWeaponChanging = false;
@@ -42,7 +43,8 @@ public class WeaponController : MonoBehaviour
         rifleFire = FindObjectOfType<RifleFire>();
         mGFire = FindObjectOfType<MGFire>();
         weaponNotActiveSound = FindObjectOfType<WeaponNotActiveSound>();
-        outOfAmmo = FindObjectOfType<OutOfAmmo>(); 
+        outOfAmmo = FindObjectOfType<OutOfAmmo>();
+        weaponSwapSound = FindObjectOfType<WeaponSwapSound>(); 
     }
 
     // Start is called before the first frame update
@@ -133,6 +135,7 @@ public class WeaponController : MonoBehaviour
             isWeaponEquipped[0] = true;
             isWeaponEquipped[1] = false;
             isWeaponEquipped[2] = false;
+            weaponSwapSound.PlaySwapSound();
 
         } else if (Input.GetKeyDown(KeyCode.Alpha1) && weaponInInventory[0] == false)
         {
@@ -156,6 +159,7 @@ public class WeaponController : MonoBehaviour
             isWeaponEquipped[0] = false;
             isWeaponEquipped[1] = true;
             isWeaponEquipped[2] = false;
+            weaponSwapSound.PlaySwapSound();
 
 
         } else if (Input.GetKeyDown(KeyCode.Alpha2) && weaponInInventory[1] == false)
@@ -180,6 +184,7 @@ public class WeaponController : MonoBehaviour
             isWeaponEquipped[0] = false;
             isWeaponEquipped[1] = false;
             isWeaponEquipped[2] = true;
+            weaponSwapSound.PlaySwapSound();
 
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) && weaponInInventory[2] == false)
