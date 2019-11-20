@@ -6,11 +6,13 @@ public class PistolAmmo : MonoBehaviour
 {
     WeaponController weaponController;
     public int AmmoIncreaseAmmount;
+    AmmoPickup ammoPickup;
 
     // Start is called before the first frame update
     void Start()
     {
         weaponController = FindObjectOfType<WeaponController>();
+        ammoPickup = FindObjectOfType<AmmoPickup>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -19,6 +21,7 @@ public class PistolAmmo : MonoBehaviour
         {
             weaponController.currentAmmoAmounts[0] += AmmoIncreaseAmmount;
             Object.Destroy(this.gameObject);
+            ammoPickup.PlayAmmoSound();
         }
         
         

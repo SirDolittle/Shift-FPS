@@ -30,6 +30,8 @@ public class WeaponController : MonoBehaviour
     private PistolFire pistolFire;
     private RifleFire rifleFire;
     private MGFire mGFire;
+    private WeaponNotActiveSound weaponNotActiveSound;
+    private OutOfAmmo outOfAmmo; 
 
 
     private bool isWeaponChanging = false;
@@ -39,6 +41,8 @@ public class WeaponController : MonoBehaviour
         pistolFire = FindObjectOfType<PistolFire>();
         rifleFire = FindObjectOfType<RifleFire>();
         mGFire = FindObjectOfType<MGFire>();
+        weaponNotActiveSound = FindObjectOfType<WeaponNotActiveSound>();
+        outOfAmmo = FindObjectOfType<OutOfAmmo>(); 
     }
 
     // Start is called before the first frame update
@@ -66,7 +70,7 @@ public class WeaponController : MonoBehaviour
 
     public void Fire()
     {
-        //doesn't work
+        
         if (isWeaponEquipped[0] == true && isOutOfAmmo == false)
         {
             PistolStats();
@@ -80,6 +84,12 @@ public class WeaponController : MonoBehaviour
         else if (isWeaponEquipped[2] == true && isOutOfAmmo == false)
         {
             MGStats();
+        }
+
+       
+        if (currentAmmoAmounts[0] <= 1 || currentAmmoAmounts[1] <= 1 || currentAmmoAmounts[2] <= 1) //Check to see if the weapon is out of ammo 
+        {
+            outOfAmmo.PlayNoAmmoSound();
         }
     }
 
@@ -105,7 +115,6 @@ public class WeaponController : MonoBehaviour
             currentWEquipped.transform.parent = GameObject.FindWithTag("PlayerCamera").transform;
             currentWEquipped.transform.rotation = playerWSlot.transform.rotation;
             isWeaponChanging = false;
-
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1) && weaponInInventory[0] == true)
@@ -125,8 +134,13 @@ public class WeaponController : MonoBehaviour
             isWeaponEquipped[1] = false;
             isWeaponEquipped[2] = false;
 
+        } else if (Input.GetKeyDown(KeyCode.Alpha1) && weaponInInventory[0] == false)
+        {
+            weaponNotActiveSound.PlayNoWeaponSound(); 
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && weaponInInventory[1] == true)
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha2) && weaponInInventory[1] == true)
         {
             if (currentAmmoAmounts[1] <= weaponAmmoAmounts[1])
             {
@@ -144,8 +158,13 @@ public class WeaponController : MonoBehaviour
             isWeaponEquipped[2] = false;
 
 
+        } else if (Input.GetKeyDown(KeyCode.Alpha2) && weaponInInventory[1] == false)
+        {
+            weaponNotActiveSound.PlayNoWeaponSound(); 
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3) &&  weaponInInventory[2] == true)
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha3) &&  weaponInInventory[2] == true)
         {
             if (currentAmmoAmounts[2] <= weaponAmmoAmounts[2])
             {
@@ -163,10 +182,10 @@ public class WeaponController : MonoBehaviour
             isWeaponEquipped[2] = true;
 
         }
-
-
-        //things we want weapons to do:
-        //Pick up 
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && weaponInInventory[2] == false)
+        {
+            weaponNotActiveSound.PlayNoWeaponSound();
+        }
 
     }
 
@@ -182,6 +201,7 @@ public class WeaponController : MonoBehaviour
             currentAmmoAmounts[0] = 0; //Stops ammo from going into minus numbers
             isOutOfAmmo = true; //Stops the ability to fire the weapon
             Debug.Log("Out OF AMMO");
+            outOfAmmo.PlayNoAmmoSound(); 
         }
         else
         {
@@ -292,11 +312,17 @@ public class WeaponController : MonoBehaviour
             currentAmmoAmounts[2] = 0; //Stops ammo from going into minus numbers
             isOutOfAmmo = true; //Stops the ability to fire the weapon
             Debug.Log("Out OF AMMO");
+
         }
         else
         {
             StartCoroutine(MGFireRate());
             mGFire.PlayMGSound();
+        }
+
+        if(currentAmmoAmounts[2] <= 1)
+        {
+            outOfAmmo.PlayNoAmmoSound();
         }
        
     }

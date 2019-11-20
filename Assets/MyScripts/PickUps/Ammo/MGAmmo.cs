@@ -5,11 +5,13 @@ using UnityEngine;
 public class MGAmmo : MonoBehaviour
 {
     WeaponController weaponController;
-    public int AmmoIncreaseAmmount; 
+    public int AmmoIncreaseAmmount;
+    AmmoPickup ammoPickup;
     // Start is called before the first frame update
     void Start()
     {
         weaponController = FindObjectOfType<WeaponController>();
+        ammoPickup = FindObjectOfType<AmmoPickup>(); 
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,6 +20,7 @@ public class MGAmmo : MonoBehaviour
         {
             weaponController.currentAmmoAmounts[2] += AmmoIncreaseAmmount;
             Object.Destroy(this.gameObject);
+            ammoPickup.PlayAmmoSound(); 
         }
         
         
