@@ -62,26 +62,35 @@ public class TurretController : MonoBehaviour
 
         Vector3 relativePos = player.transform.position - transform.position;
         Quaternion lookAtRotation = Quaternion.LookRotation(relativePos);
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, relativePos , out hit, Mathf.Infinity))
+        {
+            if (hit.collider.tag == ("Player"))
+            {
+                if (transform.rotation != lookAtRotation)
+                {
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, lookAtRotation, speed * Time.deltaTime);
+                    turretTurning.PlayturningSound();
+                }
+                else if (isShooting == false)
+                {
 
-        if (transform.rotation != lookAtRotation)
-        {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookAtRotation, speed * Time.deltaTime);
-            turretTurning.PlayturningSound();
-        }
-        else if (isShooting == false)
-        {
-            turretFiringFX.PlayturFireSound(); 
-            isShooting = true;
-            FireAtPlayer();
-            StartCoroutine(FireRate());
+                    turretFiringFX.PlayturFireSound();
+                    isShooting = true;
+                    FireAtPlayer();
+                    StartCoroutine(FireRate());
+                }
+            }
+
         }
 
         if (isShooting == true)
         {
             turretTurning.StopTuringSound();
         }
+        
 
-        IEnumerator FireRate()
+            IEnumerator FireRate()
         {
             
             yield return new WaitForSeconds(fireRate);
