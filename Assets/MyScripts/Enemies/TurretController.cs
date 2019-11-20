@@ -14,18 +14,22 @@ public class TurretController : MonoBehaviour
     public float maxRange = 5f;
     public float speed;
     private bool t_dead = false;
-    private bool isShooting = false; 
+    public bool isShooting = false;
 
     CharacterController characterController;
     EnemyStats enemyStats;
+    TurretTurning turretTurning;
+    TurretFiringFX turretFiringFX; 
     // Start is called before the first frame update
     void Awake()
     {
         characterController = FindObjectOfType<CharacterController>();
         enemyStats = FindObjectOfType<EnemyStats>();
+        turretTurning = FindObjectOfType<TurretTurning>();
         GetComponent<Collider>().attachedRigidbody.useGravity = false;
         GetComponent<Collider>().attachedRigidbody.isKinematic = true;
         player = GameObject.FindWithTag("Player");
+        turretFiringFX = FindObjectOfType<TurretFiringFX>(); 
     }
 
     // Update is called once per frame
@@ -33,25 +37,28 @@ public class TurretController : MonoBehaviour
     {
         DeathCheck();
         float p_distance = Vector3.Distance(player.transform.position, transform.position);
-        if (p_distance <= maxRange && t_dead == false) 
+        if (p_distance <= maxRange && t_dead == false)
         {
-            TrackPlayer();  
+            TrackPlayer();
         }
+
+          
     }
 
 
-     void DeathCheck()
+    void DeathCheck()
     {
         if (Turret.GetComponent<EnemyStats>().currentEnemyHealth <= 0)
         {
             GetComponent<Collider>().attachedRigidbody.isKinematic = false;
             GetComponent<Collider>().attachedRigidbody.useGravity = true;
-            t_dead = true; 
+            t_dead = true;
+            turretTurning.StopTuringSound();
         }
     }
 
     void TrackPlayer()
-    { 
+    {
 
         Vector3 relativePos = player.transform.position - transform.position;
         Quaternion lookAtRotation = Quaternion.LookRotation(relativePos);
@@ -59,18 +66,26 @@ public class TurretController : MonoBehaviour
         if (transform.rotation != lookAtRotation)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, lookAtRotation, speed * Time.deltaTime);
+            turretTurning.PlayturningSound();
         }
         else if (isShooting == false)
         {
-            isShooting = true; 
+            turretFiringFX.PlayturFireSound(); 
+            isShooting = true;
             FireAtPlayer();
             StartCoroutine(FireRate());
         }
 
+        if (isShooting == true)
+        {
+            turretTurning.StopTuringSound();
+        }
+
         IEnumerator FireRate()
         {
+            
             yield return new WaitForSeconds(fireRate);
-            isShooting = false;
+           isShooting = false;
         }
     }
 
@@ -80,6 +95,5 @@ public class TurretController : MonoBehaviour
         plasmaBall.GetComponent<Rigidbody>().AddForce(transform.forward * 3000);
     }
 
-  
 
 }

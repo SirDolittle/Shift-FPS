@@ -11,12 +11,15 @@ public class PlayerStats : MonoBehaviour
 
     private bool isPlayerDead;
 
+    BlueDoorKeySound blueDoorKeySound;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = startingPlayerHealth; //sets starting health to full
+        blueDoorKeySound = FindObjectOfType<BlueDoorKeySound>(); 
     }
 
     // Update is called once per frame
@@ -24,6 +27,7 @@ public class PlayerStats : MonoBehaviour
     {
 
         PlayerDeath();
+        
 
     }
 
@@ -43,5 +47,6 @@ public class PlayerStats : MonoBehaviour
             currentHealth = startingPlayerHealth; 
         }
     }
-        
+    
+
     }

@@ -14,7 +14,7 @@ public class PinkDoorController : MonoBehaviour
     private Vector3 openedDoor;
     public float openSpeed;
     PlayerStats playerStats;
-
+    OpenDoorSound openDoorSound;
     private void Awake()
     {
         playerStats = FindObjectOfType<PlayerStats>();
@@ -26,7 +26,7 @@ public class PinkDoorController : MonoBehaviour
         openPosition = new Vector3(0, 3, 0);
         openedDoor = currentPosition + openPosition;
         openSpeed = Vector3.Distance(currentPosition, openedDoor);
-  
+        openDoorSound = FindObjectOfType<OpenDoorSound>(); 
     }
 
 
@@ -66,6 +66,7 @@ public class PinkDoorController : MonoBehaviour
         {
             Debug.Log("Door Opened");
             doorOpen = true;
+            openDoorSound.PlayOpenDoorSound();
             StartCoroutine(OpenDoor());
            
         }
@@ -92,7 +93,7 @@ public class PinkDoorController : MonoBehaviour
         float t = 0;
         while (t < 1)
         {
-            t += Time.deltaTime / 2;
+            t += Time.deltaTime * 2;
             transform.position = Vector3.Lerp(currentPosition, openedDoor, t);
 
 

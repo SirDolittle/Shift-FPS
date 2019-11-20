@@ -12,7 +12,7 @@ public class TwoButtonDoor : MonoBehaviour
     private Vector3 closedposition;
     private Vector3 openedDoor;
     public float openSpeed;
-  
+    OpenDoorSound openDoorSound; 
 
     private void Start()
     {
@@ -20,7 +20,7 @@ public class TwoButtonDoor : MonoBehaviour
         openPosition = new Vector3(0, 3, 0);
         openedDoor = currentPosition + openPosition;
         openSpeed = Vector3.Distance(currentPosition, openedDoor);
-  
+        openDoorSound = FindObjectOfType<OpenDoorSound>(); 
     }
 
 
@@ -31,8 +31,9 @@ public class TwoButtonDoor : MonoBehaviour
         float t = 0;
         while (t < 1)
         {
-            t += Time.deltaTime / 2;
+            t += Time.deltaTime * 2;
             transform.position = Vector3.Lerp(currentPosition, openedDoor, t);
+            openDoorSound.PlayOpenDoorSound(); 
             yield return null;
         }
 
@@ -44,7 +45,7 @@ public class TwoButtonDoor : MonoBehaviour
         float t = 0;
         while (t < 1)
         {
-            t += Time.deltaTime / 2;
+            t += Time.deltaTime * 2;
             transform.position = Vector3.Lerp(openedDoor, currentPosition, t);
 
 

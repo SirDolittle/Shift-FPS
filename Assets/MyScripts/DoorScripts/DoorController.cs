@@ -12,10 +12,8 @@ public class DoorController : MonoBehaviour
     private Vector3 closedposition;
     private Vector3 openedDoor;
     public float openSpeed;
-  
-
-
-
+    ClosingDoorSound closingDoorSound;
+    OpenDoorSound openDoorSound; 
 
     private void Start()
     {
@@ -23,6 +21,8 @@ public class DoorController : MonoBehaviour
         openPosition = new Vector3(0, 3, 0);
         openedDoor = currentPosition + openPosition;
         openSpeed = Vector3.Distance(currentPosition, openedDoor);
+        closingDoorSound = FindObjectOfType<ClosingDoorSound>();
+        openDoorSound = FindObjectOfType<OpenDoorSound>(); 
   
     }
 
@@ -49,6 +49,7 @@ public class DoorController : MonoBehaviour
         {
             Debug.Log("Door Opened");
             doorOpen = true;
+            openDoorSound.PlayOpenDoorSound(); 
             StartCoroutine(OpenDoor());
            
         }
@@ -61,9 +62,8 @@ public class DoorController : MonoBehaviour
         float t = 0;
         while (t < 1)
         {
-            t += Time.deltaTime / 2;
+            t += Time.deltaTime * 2;
             transform.position = Vector3.Lerp(openedDoor, currentPosition, t);
-
 
             yield return null;
         }
@@ -75,7 +75,7 @@ public class DoorController : MonoBehaviour
         float t = 0;
         while (t < 1)
         {
-            t += Time.deltaTime / 2;
+            t += Time.deltaTime * 2;
             transform.position = Vector3.Lerp(currentPosition, openedDoor, t);
 
 

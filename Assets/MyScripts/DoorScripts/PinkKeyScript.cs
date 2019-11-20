@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PinkKeyScript : MonoBehaviour
 {
-    PlayerStats playerStats;
+    PlayerStats playerStats; 
     // Start is called before the first frame update
     void Awake()
     {
-        playerStats = FindObjectOfType<PlayerStats>(); 
+        playerStats = FindObjectOfType<PlayerStats>();
     }
 
     // Update is called once per frame
