@@ -19,7 +19,8 @@ public class TurretController : MonoBehaviour
     CharacterController characterController;
     EnemyStats enemyStats;
     TurretTurning turretTurning;
-    TurretFiringFX turretFiringFX; 
+    TurretFiringFX turretFiringFX;
+    TurretDeathExplosion turretDeathExplosion;
     // Start is called before the first frame update
     void Awake()
     {
@@ -29,7 +30,8 @@ public class TurretController : MonoBehaviour
         GetComponent<Collider>().attachedRigidbody.useGravity = false;
         GetComponent<Collider>().attachedRigidbody.isKinematic = true;
         player = GameObject.FindWithTag("Player");
-        turretFiringFX = FindObjectOfType<TurretFiringFX>(); 
+        turretFiringFX = FindObjectOfType<TurretFiringFX>();
+        turretDeathExplosion = FindObjectOfType<TurretDeathExplosion>(); 
     }
 
     // Update is called once per frame
@@ -53,6 +55,7 @@ public class TurretController : MonoBehaviour
             GetComponent<Collider>().attachedRigidbody.isKinematic = false;
             GetComponent<Collider>().attachedRigidbody.useGravity = true;
             t_dead = true;
+            turretDeathExplosion.PlayTurretDeathSound(); 
             turretTurning.StopTuringSound();
         }
     }

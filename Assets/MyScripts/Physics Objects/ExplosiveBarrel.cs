@@ -15,12 +15,14 @@ public class ExplosiveBarrel : MonoBehaviour
     private Color startingColor;
     PlayerStats playerStats;
     DamageIndication damageIndication;
+    BarrelExplosionSound barrelExplosionSound;
 
     private void Awake()
     {
         playerStats = FindObjectOfType<PlayerStats>();
         damageIndication = FindObjectOfType<DamageIndication>();
         startingColor = gameObject.GetComponent<Renderer>().material.color;
+        barrelExplosionSound = FindObjectOfType<BarrelExplosionSound>(); 
 
     }
 
@@ -41,48 +43,54 @@ public class ExplosiveBarrel : MonoBehaviour
         GameObject Explosive = GameObject.FindWithTag("Explosive");
         float p_Distance = Vector3.Distance(player.transform.position, transform.position);
        
-
         float p_currentDistance = p_Distance / maxDistance;
+        Vector3 relativePos = player.transform.position - transform.position;
 
         float p_damage = Mathf.Lerp(maxDamage, minDamage, p_currentDistance);
-   
 
-        if (p_currentDistance <= 1)
+        barrelExplosionSound.PlayBExplosionSound(); 
+       RaycastHit rayHit;
+        if (Physics.Raycast(transform.position, relativePos, out rayHit, Mathf.Infinity))
         {
-            playerStats.currentHealth -= (int)p_damage;
-            damageIndication.ShowDamageIndicator();
-        }
-
-        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, maxDistance);
-        foreach (Collider col in enemiesInRange)
-        {
-            EnemyStats enemyStats = col.GetComponent<EnemyStats>();
-            ExplosiveBarrel explosiveBarrel = col.GetComponent<ExplosiveBarrel>();
-            if (enemyStats != null)
+            if (rayHit.collider.tag == "Player")
             {
-                float e_Distance = Vector3.Distance(col.transform.position, transform.position);
-                float e_currentDistance = e_Distance / maxDistance;
-                float e_damage = Mathf.Lerp(maxDamage, minDamage, e_currentDistance);
-                enemyStats.currentEnemyHealth -= (int)e_damage;
-
+                if (p_currentDistance <= 1)
+                {
+                    playerStats.currentHealth -= (int)p_damage;
+                    damageIndication.ShowDamageIndicator();
+                }
             }
+        }
+            Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, maxDistance);
+            foreach (Collider col in enemiesInRange)
+            {
+                EnemyStats enemyStats = col.GetComponent<EnemyStats>();
+                ExplosiveBarrel explosiveBarrel = col.GetComponent<ExplosiveBarrel>();
+                if (enemyStats != null)
+                {
+                    float e_Distance = Vector3.Distance(col.transform.position, transform.position);
+                    float e_currentDistance = e_Distance / maxDistance;
+                    float e_damage = Mathf.Lerp(maxDamage, minDamage, e_currentDistance);
+                    enemyStats.currentEnemyHealth -= (int)e_damage;
+
+                }
 
 
                 
-        }
-
-        Collider[] barrelInRange = Physics.OverlapSphere(transform.position, maxDistance);
-        foreach (Collider col in barrelInRange)
-        {
-            ExplosiveBarrel explosiveBarrel = col.GetComponent<ExplosiveBarrel>();
-            if (explosiveBarrel != null)
-            {
-                float e_Distance = Vector3.Distance(col.transform.position, transform.position);
-                float e_currentDistance = e_Distance / maxDistance;
-                float e_damage = Mathf.Lerp(maxDamage, minDamage, e_currentDistance);
-                explosiveBarrel.barrelHP -= (int)e_damage;
-                explosiveBarrel.ExplodeCheck();
             }
+
+            Collider[] barrelInRange = Physics.OverlapSphere(transform.position, maxDistance);
+            foreach (Collider col in barrelInRange)
+            {
+                ExplosiveBarrel explosiveBarrel = col.GetComponent<ExplosiveBarrel>();
+                if (explosiveBarrel != null)
+                {
+                    float e_Distance = Vector3.Distance(col.transform.position, transform.position);
+                    float e_currentDistance = e_Distance / maxDistance;
+                    float e_damage = Mathf.Lerp(maxDamage, minDamage, e_currentDistance);
+                    explosiveBarrel.barrelHP -= (int)e_damage;
+                    explosiveBarrel.ExplodeCheck();
+                }
 
 
 
