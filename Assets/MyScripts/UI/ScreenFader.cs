@@ -7,6 +7,9 @@ public class ScreenFader : MonoBehaviour
 {
     public GameObject HUD;
    
+    
+
+
     public void fade()
     {
         StartCoroutine(DoFade());

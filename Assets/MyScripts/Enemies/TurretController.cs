@@ -52,11 +52,13 @@ public class TurretController : MonoBehaviour
     {
         if (Turret.GetComponent<EnemyStats>().currentEnemyHealth <= 0)
         {
+            
             GetComponent<Collider>().attachedRigidbody.isKinematic = false;
             GetComponent<Collider>().attachedRigidbody.useGravity = true;
             t_dead = true;
             turretDeathExplosion.PlayTurretDeathSound(); 
             turretTurning.StopTuringSound();
+            this.gameObject.GetComponent<TurretController>().enabled = false;
         }
     }
 

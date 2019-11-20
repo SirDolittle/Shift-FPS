@@ -2,18 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectiveTracker : MonoBehaviour
+public class ObjectiveMarkerController : MonoBehaviour
 {
-    public string[] MainObjectives; 
+    ObjectiveBools objectiveBools;
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }

@@ -8,7 +8,8 @@ public class TurretPowerLines : MonoBehaviour
     public GameObject[] attatchedTurrets;
     public GameObject[] attatchedTurretGlow;
     public Material disactive;
-    public Text pressE; 
+    public Text pressE;
+    public  ObjectiveBools objectiveBools;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,10 @@ public class TurretPowerLines : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(attatchedTurrets[0].GetComponent<TurretController>().enabled == false && attatchedTurrets[1].GetComponent<TurretController>().enabled == false && attatchedTurrets[2].GetComponent<TurretController>().enabled == false)
+        {
+            objectiveBools.ObjectivesCompleted[3] = true; 
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -31,6 +35,8 @@ public class TurretPowerLines : MonoBehaviour
             foreach (GameObject enemy in attatchedTurrets)
             {
                 enemy.GetComponent<TurretController>().enabled = false;
+                
+
             }
 
             foreach (GameObject enemy in attatchedTurretGlow)

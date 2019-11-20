@@ -10,13 +10,16 @@ public class EnemyStats : MonoBehaviour
     public GameObject E_healthPrefab;
     public bool spawnhealth;
     WeaponController weaponController;
+    public ObjectiveBools ObjectiveBools;
+    ObjectiveTracker objectiveTracker;
 
     // Start is called before the first frame update
     void Start()
     {
         currentEnemyHealth = enemyHealth;
         spawnhealth = true;
-        weaponController = FindObjectOfType<WeaponController>(); 
+        weaponController = FindObjectOfType<WeaponController>();
+        objectiveTracker = FindObjectOfType<ObjectiveTracker>(); 
     }
 
     // Update is called once per frame
@@ -26,12 +29,15 @@ public class EnemyStats : MonoBehaviour
         if (currentEnemyHealth <= 0)
         {
             currentEnemyHealth = 0;
-           if(spawnhealth == true && weaponController.isWeaponEquipped[0])
+            objectiveTracker.ObjectiveCheck(); 
+            ObjectiveBools.ObjectivesCompleted[2] = true;
+            if (spawnhealth == true && weaponController.isWeaponEquipped[0])
             {
                 for (int i = 0; i < HealthSpawned; i++)
                 {
                     E_healthPrefab = GameObject.Instantiate(E_healthPrefab, transform.position, Quaternion.identity);
                     E_healthPrefab.GetComponent<Rigidbody>().AddForce(Random.Range(-100, 100), Random.Range(-100, 100), Random.Range(-100, 100));
+                    
                 }
                     spawnhealth = false;
             } else

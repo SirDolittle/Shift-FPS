@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 396eb1e16ed085d409e75bfc9837d08b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - currentMainObjective: {instanceID: 0}
+  - currentSideObjective: {instanceID: 0}
+  - objectivebools: {fileID: 11400000, guid: 8dc9af8b5e0c3044a8181a9ea900054d, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
