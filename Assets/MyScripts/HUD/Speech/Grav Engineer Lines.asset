@@ -13,6 +13,33 @@ MonoBehaviour:
   m_Name: Grav Engineer Lines
   m_EditorClassIdentifier: 
   GEngiLines:
-  - Oh! You're awake!
-  - Lets make sure you can still move around.
-  - 'Go jump over that rubble. '
+  - 'Holy ****, you''re awake! Walk around a bit need to make sure you can walk. '
+  - Good, now jump over that rubble!
+  - 'Well, we know you''re good at listening. Now you need to get to the elevator,
+    to do that, you need to open that door. Look for a button. '
+  - 'Well ****, you''re trapped. Well it was nice taking to you.....WAIT! GRAVITY!
+    I can change the gravity, well I mean you can now. Give it a try. '
+  - There you go, it works depending upon where you are looking. So forwards is always
+    forwards, I thought it might be a little less confusing when using it in a pinch.
+    :D
+  - 'Becareful! Their is a turret in there. You''re pistol will take it out but shooting
+    the barrel will be quicker. Try turning the gravity upside down when the barrel
+    is about to explode. '
+  - 'Great! Now that turret was faulty, so it was firing slowly. This next room has
+    more turrets which are fully functional. Lucky for you maintenance uses a button
+    on the ceiling to deacivate all in that room. Its glowing red on the ceiling you
+    can''t miss it. Press it to deactivate the turrets or destroy them. Either works,
+    it up to you. '
+  - 'Anyway while you''re doing that, the ship was boarded by PIRATES. They have been
+    slowly making their way throughout the ship but, due to its size, have only started
+    to breach into the lower levels, which is where you still are by the way, so you
+    might see some. Also they hacked the turrets if you''re wondering why they are
+    attacking you. '
+  - 'Anyway while you''re doing that, the ship was boarded by PIRATES. They have been
+    slowly making their way throughout the ship but, due to its size, have only started
+    to breach into the lower levels, which is where you still are by the way, so you
+    might see some. Also they hacked the turrets if you''re wondering why they are
+    attacking you. '
+  LineBool: 000000000000000000
+  isTyping: 0
+  locationNumber: 0

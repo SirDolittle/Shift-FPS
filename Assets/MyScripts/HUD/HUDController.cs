@@ -9,10 +9,10 @@ public class HUDController : MonoBehaviour
     public Text AmmoIntDisplay;
     public Image HealthBar;
     public Image WeaponDisplay;
-    private float HealthConv; 
+    private float HealthConv;
     PlayerStats playerStats;
     WeaponController weaponController;
-
+    public GravEngineerLines gravEngineerLines;
 
     // Start is called before the first frame update
     void Start()
@@ -37,12 +37,13 @@ public class HUDController : MonoBehaviour
         {
             if (weaponController.currentAmmoAmounts[0] >= weaponController.weaponAmmoAmounts[0])
             {
-                AmmoIntDisplay.text = weaponController.weaponAmmoAmounts[0].ToString(); 
-            } else
+                AmmoIntDisplay.text = weaponController.weaponAmmoAmounts[0].ToString();
+            }
+            else
             {
                 AmmoIntDisplay.text = weaponController.currentAmmoAmounts[0].ToString();
             }
-           
+
             WeaponDisplay.sprite = weaponController.WeaponDisplayImage[0];
 
 
@@ -81,5 +82,14 @@ public class HUDController : MonoBehaviour
         HealthBar.fillAmount = HealthConv;
         HealthIntDisplay.text = playerStats.currentHealth.ToString();
     }
-}
 
+    private void OnApplicationQuit()
+    {
+        for (int i = 0; i < gravEngineerLines.LineBool.Length; i++)
+        {
+            gravEngineerLines.LineBool[i] = false;
+            gravEngineerLines.isTyping = false;
+        }
+        gravEngineerLines.locationNumber = 0; 
+    }
+}
