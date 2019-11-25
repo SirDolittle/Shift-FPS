@@ -35,11 +35,9 @@ MonoBehaviour:
     to breach into the lower levels, which is where you still are by the way, so you
     might see some. Also they hacked the turrets if you''re wondering why they are
     attacking you. '
-  - 'Anyway while you''re doing that, the ship was boarded by PIRATES. They have been
-    slowly making their way throughout the ship but, due to its size, have only started
-    to breach into the lower levels, which is where you still are by the way, so you
-    might see some. Also they hacked the turrets if you''re wondering why they are
-    attacking you. '
-  LineBool: 000000000000000000
+  - 'Did you get any of that? '
+  - Great, the elevator is a pile of rubble as well. Take that key and look for a
+    ventilation shaft.
+  LineBool: 00000000000000000000
   isTyping: 0
   locationNumber: 0
