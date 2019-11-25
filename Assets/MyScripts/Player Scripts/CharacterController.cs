@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
 
-    private float moveSpeed = 10; // move speed
+    public float moveSpeed = 10; // move speed
     private float turnSpeed = 90; // turning speed (degrees/second)
     private float lerpSpeed = 5; // smoothing speed
     private float gravity = 9.8f; // gravity acceleration

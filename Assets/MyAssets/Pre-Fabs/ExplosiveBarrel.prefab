@@ -249,11 +249,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a5c4520b37006439f8524d82b07388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyHealth: 50
+  enemyHealth: 20
   currentEnemyHealth: 0
   HealthSpawned: 0
   E_healthPrefab: {fileID: 0}
   spawnhealth: 0
+  ObjectiveBools: {fileID: 0}
 --- !u!114 &5668352474762585604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,8 +267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5547020d8758dc741a0d5c047abaf2f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  barrelHP: 50
-  maxDamage: 200
+  barrelHP: 20
+  maxDamage: 400
   minDamage: 10
   maxDistance: 10
   ExplosionForce: 100
