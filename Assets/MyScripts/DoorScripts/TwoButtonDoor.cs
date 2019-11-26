@@ -33,6 +33,7 @@ public class TwoButtonDoor : MonoBehaviour
         {
             t += Time.deltaTime * 2;
             transform.position = Vector3.Lerp(currentPosition, openedDoor, t);
+            doorOpen = true; 
             openDoorSound.PlayOpenDoorSound(); 
             yield return null;
         }

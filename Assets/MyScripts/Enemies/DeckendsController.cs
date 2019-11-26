@@ -120,19 +120,25 @@ public class DeckendsController : MonoBehaviour
         }
     }
 
-   
+
     void RangeCheck()
     {
+        Vector3 relativePos = player.transform.position - transform.position;
+        RaycastHit hit;
         float playerDist = Vector3.Distance(player.transform.position, transform.position);
-        if(playerDist <= SkewardSightRange)
+        if (playerDist <= SkewardSightRange)
         {
-            playerInSight = true;
-        } 
- 
-      
+            if (Physics.Raycast(transform.position, relativePos, out hit, Mathf.Infinity))
+            {
+                if (hit.collider.tag == ("Player"))
+                {
+                    playerInSight = true;
 
-
+                }
+            }
+        }
     }
+
 
 
 

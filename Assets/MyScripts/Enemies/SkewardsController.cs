@@ -126,31 +126,38 @@ public class SkewardsController : MonoBehaviour
    
     void RangeCheck()
     {
-        float playerDist = Vector3.Distance(player.transform.position, transform.position);
-        if(playerDist <= SkewardSightRange)
+        Vector3 relativePos = player.transform.position - transform.position;
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, relativePos, out hit, Mathf.Infinity))
         {
-            playerInSight = true;
-        } 
-        if(playerDist >= 5 && playerDist <=15 && isSkewardDead == false && isThrowing == false && throwingknifeAmmount >= 1)
-        {
+            if (hit.collider.tag == ("Player"))
+            {
 
-            StopAndLookAtPlayer();
-            ThrowKnife();
-            StartCoroutine(ThrowRate());
-           
+                float playerDist = Vector3.Distance(player.transform.position, transform.position);
+                if (playerDist <= SkewardSightRange)
+                {
+                    playerInSight = true;
+                }
+                if (playerDist >= 5 && playerDist <= 15 && isSkewardDead == false && isThrowing == false && throwingknifeAmmount >= 1)
+                {
+
+                    StopAndLookAtPlayer();
+                    ThrowKnife();
+                    StartCoroutine(ThrowRate());
+
+                }
+                else if (playerDist < 5 || playerDist > 15)
+                {
+                    gameObject.GetComponent<NavMeshAgent>().speed = 8;
+                }
+
+                IEnumerator ThrowRate()
+                {
+                    yield return new WaitForSeconds(2f);
+                    isThrowing = false;
+                }
+            }
         }
-        else if (playerDist < 5 || playerDist > 15)
-        {
-            gameObject.GetComponent<NavMeshAgent>().speed = 8;
-        }
-
-        IEnumerator ThrowRate()
-        {
-            yield return new WaitForSeconds(2f);
-            isThrowing = false;
-        }
-
-
     }
 
     void ThrowKnife()
