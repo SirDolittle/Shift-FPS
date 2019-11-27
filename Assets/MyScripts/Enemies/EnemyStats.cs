@@ -35,6 +35,7 @@ public class EnemyStats : MonoBehaviour
             {
                 for (int i = 0; i < HealthSpawned; i++)
                 {
+                    Debug.Log("Health Spawned");
                     E_healthPrefab = GameObject.Instantiate(E_healthPrefab, transform.position, Quaternion.identity);
                     E_healthPrefab.GetComponent<Rigidbody>().AddForce(Random.Range(-100, 100), Random.Range(-100, 100), Random.Range(-100, 100));
                     

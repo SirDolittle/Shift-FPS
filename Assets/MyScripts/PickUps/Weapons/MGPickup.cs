@@ -5,6 +5,7 @@ using UnityEngine;
 public class MGPickup : MonoBehaviour
 {
     WeaponController weaponController;
+    WeaponPickupSound weaponPickupSound;
     // Start is called before the first frame update
 
     private void FixedUpdate()
@@ -14,7 +15,8 @@ public class MGPickup : MonoBehaviour
 
     void Start()
     {
-        weaponController = FindObjectOfType<WeaponController>(); 
+        weaponController = FindObjectOfType<WeaponController>();
+        weaponPickupSound = FindObjectOfType<WeaponPickupSound>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -23,6 +25,7 @@ public class MGPickup : MonoBehaviour
         {
             weaponController.weaponInInventory[2] = true;
             Object.Destroy(this.gameObject);
+            weaponPickupSound.PlayWPickSound();
         }
     }
 }

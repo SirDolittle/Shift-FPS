@@ -19,6 +19,7 @@ public class Objective6Activation : MonoBehaviour
         {
             objectiveBools.ObjectivesCompleted[5] = true;
             objectiveTracker.ObjectiveCheck();
+            Object.Destroy(gameObject); 
         }
     }
 }

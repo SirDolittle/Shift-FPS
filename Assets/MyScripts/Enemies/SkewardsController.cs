@@ -44,71 +44,47 @@ public class SkewardsController : MonoBehaviour
     }
     void Start()
     {
+        skewardNav.enabled = false;
         myNormal = transform.up;
-        GetComponent<Rigidbody>().freezeRotation = true; // disable physics rotation
+        StartCoroutine(startNavMeshAgent());
     }
 
     private void FixedUpdate()
     {
-       GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
-        if (isSkewardDead == false)
-        {
-            UpdateForward();
-        }
+        GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
+
         GravityChangeCheck();
-        GroundDectection();
         DeathCheck();
         RangeCheck();
     }
 
     void Update()
     {
-       
+
     }
 
     void GravityChangeCheck()
     {
-        if (characterController.gravityShift == true)
+        if (characterController.gravityShift == true )
         {
             skewardNav.enabled = false;
             myNormal = characterController.hitNormal;
             myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
-            
+            if (isSkewardDead == false)
+            {
+                StartCoroutine(startNavMeshAgent());
+            }
         }
         else if (isSkewardDead == false && playerInSight == true)
         {
-           skewardNav.destination = player.transform.position;
+            skewardNav.destination = player.transform.position;
         }
     }
 
-    private void UpdateForward()
+    IEnumerator startNavMeshAgent()
     {
-        Vector3 myForward = Vector3.Cross(transform.right, myNormal); // find forward direction with new myNormal
-        Quaternion targetRot = Quaternion.LookRotation(myForward, myNormal); // align character to the new myNormal while keeping the forward direction
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
-
-
-    }
-
-    private void GroundDectection()
-    {
-        // update surface normal and isGrounded:
-        Ray ray;
-        RaycastHit hit;
-        if (skewardNav.enabled == false)
-        {
-            ray = new Ray(transform.position, -myNormal); // cast ray downwards
-            if (Physics.Raycast(ray, out hit, 1f))
-            { // use it to update myNormal and isGrounded
-                surfaceNormal = hit.normal;
-                skewardNav.enabled = true;
-            }
-            else
-            {
-                // assume usual ground normal to avoid "falling forever"
-                surfaceNormal = Vector3.up;
-            }
-        }
+        yield return new WaitForSeconds(5f);
+        skewardNav.enabled = true;
     }
 
     void DeathCheck()

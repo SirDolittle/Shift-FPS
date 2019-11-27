@@ -19,12 +19,12 @@ public class NavMeshActivation : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        ActivateNavMesh();
+        ActivateNavMesh();    
     }
 
-    void ActivateNavMesh()
+    public void ActivateNavMesh()
     {
         if (characterController.myNormal == new Vector3(0, 1, 0))
         {

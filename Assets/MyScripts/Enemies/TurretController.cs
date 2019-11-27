@@ -18,7 +18,7 @@ public class TurretController : MonoBehaviour
 
     CharacterController characterController;
     EnemyStats enemyStats;
-    TurretTurning turretTurning;
+    public GameObject turretSound;
     TurretFiringFX turretFiringFX;
     TurretDeathExplosion turretDeathExplosion;
     // Start is called before the first frame update
@@ -26,7 +26,6 @@ public class TurretController : MonoBehaviour
     {
         characterController = FindObjectOfType<CharacterController>();
         enemyStats = FindObjectOfType<EnemyStats>();
-        turretTurning = FindObjectOfType<TurretTurning>();
         GetComponent<Collider>().attachedRigidbody.useGravity = false;
         GetComponent<Collider>().attachedRigidbody.isKinematic = true;
         player = GameObject.FindWithTag("Player");
@@ -42,6 +41,9 @@ public class TurretController : MonoBehaviour
         if (p_distance <= maxRange && t_dead == false)
         {
             TrackPlayer();
+        }else
+        {
+            turretSound.GetComponent<TurretTurning>().StopTuringSound(); 
         }
 
           
@@ -56,8 +58,8 @@ public class TurretController : MonoBehaviour
             GetComponent<Collider>().attachedRigidbody.isKinematic = false;
             GetComponent<Collider>().attachedRigidbody.useGravity = true;
             t_dead = true;
-            turretDeathExplosion.PlayTurretDeathSound(); 
-            turretTurning.StopTuringSound();
+            turretDeathExplosion.PlayTurretDeathSound();
+            turretSound.GetComponent<TurretTurning>().StopTuringSound(); 
             this.gameObject.GetComponent<TurretController>().enabled = false;
         }
     }
@@ -75,23 +77,24 @@ public class TurretController : MonoBehaviour
                 if (transform.rotation != lookAtRotation)
                 {
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, lookAtRotation, speed * Time.deltaTime);
-                    turretTurning.PlayturningSound();
+                    turretSound.GetComponent<TurretTurning>().PlayturningSound();
                 }
                 else if (isShooting == false)
                 {
-
+                    turretSound.GetComponent<TurretTurning>().StopTuringSound(); 
                     turretFiringFX.PlayturFireSound();
                     isShooting = true;
                     FireAtPlayer();
                     StartCoroutine(FireRate());
                 }
+
             }
 
         }
 
         if (isShooting == true)
         {
-            turretTurning.StopTuringSound();
+            turretSound.GetComponent<TurretTurning>().StopTuringSound();
         }
         
 

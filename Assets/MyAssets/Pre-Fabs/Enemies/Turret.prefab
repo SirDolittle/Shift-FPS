@@ -544,6 +544,7 @@ MonoBehaviour:
   maxRange: 15
   speed: 100
   isShooting: 0
+  turretSound: {fileID: 5521226087499461829}
 --- !u!1 &5174125959261548834
 GameObject:
   m_ObjectHideFlags: 0

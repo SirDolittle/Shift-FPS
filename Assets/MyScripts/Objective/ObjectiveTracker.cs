@@ -19,6 +19,13 @@ public class ObjectiveTracker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        objectivebools.ObjectivesCompleted[0] = false;
+        objectivebools.ObjectivesCompleted[1] = false;
+        objectivebools.ObjectivesCompleted[2] = false;
+        objectivebools.ObjectivesCompleted[3] = false;
+        objectivebools.ObjectivesCompleted[4] = false;
+        objectivebools.ObjectivesCompleted[5] = false;
+        objectivebools.ObjectivesCompleted[6] = false;
         currentMainObjective.text = MainObjectives[0];
         currentSideObjective.text = SideObjectives[0];
         currentSideMarker = Instantiate(SideMarker, SideMarkers[0].transform.position, Quaternion.identity);

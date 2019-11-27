@@ -12,7 +12,7 @@ public class ButtonDoor : MonoBehaviour
     private Vector3 closedposition;
     private Vector3 openedDoor;
     public float openSpeed;
-
+    private bool isDoorOpening; 
     OpenDoorSound openDoorSound; 
   
 
@@ -30,21 +30,27 @@ public class ButtonDoor : MonoBehaviour
 
     public IEnumerator OpenDoor()
     {
-
-        float t = 0;
-        while (t < 1)
+        if (isDoorOpening == false)
         {
-            t += Time.deltaTime * 2;
-            transform.position = Vector3.Lerp(currentPosition, openedDoor, t);
-            openDoorSound.PlayOpenDoorSound();
-            yield return null;
-        }
+            float t = 0;
+            while (t < 1)
+            {
+                isDoorOpening = true; 
+                t += Time.deltaTime * 2;
+                transform.position = Vector3.Lerp(currentPosition, openedDoor, t);
+                openDoorSound.PlayOpenDoorSound();
+                yield return null;
+            }
 
+            isDoorOpening = false; 
+           
+        }
         yield return null;
     }
 
     public IEnumerator CloseDoor()
     {
+
         float t = 0;
         while (t < 1)
         {

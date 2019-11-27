@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 5907420571545998812}
   - component: {fileID: 5907420571545998813}
   m_Layer: 9
-  m_Name: Turret 1
+  m_Name: TurretV2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -557,6 +557,7 @@ MonoBehaviour:
   maxRange: 15
   speed: 100
   isShooting: 0
+  turretSound: {fileID: 6533098309947531674}
 --- !u!1 &5907420573288593997
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ public class CharacterController : MonoBehaviour
     private float lerpSpeed = 5; // smoothing speed
     private float gravity = 9.8f; // gravity acceleration
     private float deltaGround = 0.2f; // character is grounded up to this distance
-    private float jumpSpeed = 10; // vertical jump initial speed
+    public float jumpHeight = 100; // vertical jump initial speed
     private float jumpRange = 10; // range to detect target wall
     private float distGround; // distance from character position to ground
     private float cameraYAxis;
@@ -105,6 +105,14 @@ public class CharacterController : MonoBehaviour
     private void PlayerMovement()
     {
         myTransform.Translate(Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime, 0, Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);  // move the character forth/back with Vertical axis
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (isGrounded)
+            { // no: if grounded, jump up
+               GetComponent<Rigidbody>().AddForce(myNormal * jumpHeight);
+
+            }
+        }
     }
 
     private void GravityUIControll()
@@ -129,13 +137,7 @@ public class CharacterController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            if (isGrounded)
-            { // no: if grounded, jump up
-              GetComponent<Rigidbody>().velocity += jumpSpeed * myNormal;
-            }
-        }
+       
 
         
     }

@@ -8,7 +8,8 @@ public class DoorButton : MonoBehaviour
     public Text pressE;
     public Material sidePillar; 
     ButtonDoor buttonDoor;
-    private bool doorOpen = false; 
+    private bool doorOpen = false;
+    bool eIsPressed; 
     // Start is called before the first frame update
 
     void Awake()
@@ -34,7 +35,7 @@ public class DoorButton : MonoBehaviour
                 StartCoroutine(buttonDoor.OpenDoor());
                 doorOpen = true;
             }
-            else
+            else if (doorOpen == true)
             {
                 Debug.Log("Door Closed");
                 StartCoroutine(buttonDoor.CloseDoor());
