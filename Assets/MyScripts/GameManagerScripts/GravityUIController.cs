@@ -22,4 +22,10 @@ public class GravityUIController : MonoBehaviour
         buttonUsed = new bool[5];
     }
 
+    [ContextMenu("Check Gravity")]
+    void GravityDirectionCheck()
+    {
+        print(Physics.gravity);
+    }
+
 }

@@ -35,14 +35,7 @@ public class HUDController : MonoBehaviour
 
         if (weaponController.isWeaponEquipped[0] == true)
         {
-            if (weaponController.currentAmmoAmounts[0] >= weaponController.weaponAmmoAmounts[0])
-            {
-                AmmoIntDisplay.text = weaponController.weaponAmmoAmounts[0].ToString();
-            }
-            else
-            {
-                AmmoIntDisplay.text = weaponController.currentAmmoAmounts[0].ToString();
-            }
+            AmmoIntDisplay.enabled = false;
 
             WeaponDisplay.sprite = weaponController.WeaponDisplayImage[0];
 
@@ -50,6 +43,7 @@ public class HUDController : MonoBehaviour
         }
         else if (weaponController.isWeaponEquipped[1] == true)
         {
+            AmmoIntDisplay.enabled = true;
             if (weaponController.currentAmmoAmounts[1] >= weaponController.weaponAmmoAmounts[1])
             {
                 AmmoIntDisplay.text = weaponController.weaponAmmoAmounts[1].ToString();
@@ -63,6 +57,7 @@ public class HUDController : MonoBehaviour
         }
         else if (weaponController.isWeaponEquipped[2] == true)
         {
+            AmmoIntDisplay.enabled = true;
             if (weaponController.currentAmmoAmounts[2] >= weaponController.weaponAmmoAmounts[2])
             {
                 AmmoIntDisplay.text = weaponController.weaponAmmoAmounts[2].ToString();

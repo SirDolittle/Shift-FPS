@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class DeckendsController : MonoBehaviour
-{ 
+{
     public int meleeDamage = 15;
     public float SkewardSightRange;
 
@@ -18,7 +18,8 @@ public class DeckendsController : MonoBehaviour
     public bool inMelee = false;
     private bool isThrowing = false;
     private bool playerInSight = false;
-    private bool isOnGround = true;
+    private bool hasChecked;
+    private bool isGrounded; 
 
     private Vector3 surfaceNormal;
     private Vector3 myNormal;
@@ -28,7 +29,7 @@ public class DeckendsController : MonoBehaviour
     private DamageIndication damageIndication;
     private NavMeshAgent skewardNav;
     private EnemyStats enemyStats;
-
+     
     void Awake()
     {
         skewardNav = GetComponent<NavMeshAgent>();
@@ -40,56 +41,56 @@ public class DeckendsController : MonoBehaviour
     }
     void Start()
     {
-        skewardNav.enabled = false; 
+        skewardNav.enabled = false;
+        skewardNav.updatePosition = false; 
         myNormal = transform.up;
         StartCoroutine(startNavMeshAgent());
-
     }
 
     private void FixedUpdate()
     {
-       GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
-
-        GravityChangeCheck();
+        GravityChangeCheck(); 
         DeathCheck();
         RangeCheck();
-    }
-
-    void Update()
-    {
+        GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
        
     }
 
+
     void GravityChangeCheck()
     {
-        if (characterController.gravityShift == true)
+        if (characterController.gravityShift == true )
         {
             skewardNav.enabled = false;
+            skewardNav.updatePosition = false; 
             myNormal = characterController.hitNormal;
+            hasChecked = true; 
             myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
-            if (isSkewardDead == false)
-            {
-                StartCoroutine(startNavMeshAgent());
+            Ray ray;
+            RaycastHit hit;
+            ray = new Ray(transform.position, -transform.up);
+            if (Physics.Raycast(ray, out hit, 3f))
+            { // wall ahead?
+               StartCoroutine(startNavMeshAgent());
             }
+           
 
-        }
-        else if (isSkewardDead == false && playerInSight == true)
-        {
-           skewardNav.destination = player.transform.position;
         }
     }
 
     IEnumerator startNavMeshAgent()
     {
-        yield return new WaitForSeconds(5f);
-        skewardNav.enabled = true; 
+        yield return new WaitForSeconds(3f);
+        skewardNav.enabled = true;
+        skewardNav.updatePosition = true; 
+        characterController.gravityShift = false;
     }
 
 
     void DeathCheck()
     {
-        
-        if(gameObject.GetComponent<EnemyStats>().currentEnemyHealth <= 0)
+
+        if (gameObject.GetComponent<EnemyStats>().currentEnemyHealth <= 0)
         {
             //play death animation 
             isSkewardDead = true;
@@ -98,6 +99,13 @@ public class DeckendsController : MonoBehaviour
         }
     }
 
+    void MoveTowardsPlayer()
+    {
+        if (isSkewardDead == false && playerInSight == true && skewardNav.isOnNavMesh == true)
+        {
+            skewardNav.destination = player.transform.position;
+        }
+    }
 
     void RangeCheck()
     {
@@ -111,13 +119,11 @@ public class DeckendsController : MonoBehaviour
                 if (hit.collider.tag == ("Player"))
                 {
                     playerInSight = true;
-
+                    MoveTowardsPlayer();
                 }
             }
         }
     }
-
-
 
 
     private void OnTriggerStay(Collider other)
@@ -136,6 +142,4 @@ public class DeckendsController : MonoBehaviour
             inMelee = false;
         }
     }
-
-
 }

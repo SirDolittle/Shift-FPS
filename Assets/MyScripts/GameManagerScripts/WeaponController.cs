@@ -6,6 +6,7 @@ public class WeaponController : MonoBehaviour
 {
     public GameObject currentWEquipped;
     public GameObject PlayerCamera;
+    public GameObject PistolAmmo; 
     public GameObject[] weapons;
     public Sprite[] WeaponDisplayImage;
     public float[] weaponAmmoAmounts;
@@ -105,6 +106,7 @@ public class WeaponController : MonoBehaviour
         isWeaponEquipped[0] = true;
         isWeaponEquipped[1] = false;
         isWeaponEquipped[2] = false;
+        PistolAmmo.active = true;
 
     }
 
@@ -121,14 +123,7 @@ public class WeaponController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1) && weaponInInventory[0] == true)
         {
-            if (currentAmmoAmounts[0] <= weaponAmmoAmounts[0])
-            {
-                isOutOfAmmo = false;
-            }
-            if (currentAmmoAmounts[0] <= 0)
-            {
-                isOutOfAmmo = true;
-            }
+            PistolAmmo.active = true;   
             Object.Destroy(currentWEquipped);
             currentWEquipped = weapons[0];
             isWeaponChanging = true;
@@ -145,6 +140,7 @@ public class WeaponController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha2) && weaponInInventory[1] == true)
         {
+            PistolAmmo.active = false;
             if (currentAmmoAmounts[1] <= weaponAmmoAmounts[1])
             {
                 isOutOfAmmo = false;
@@ -170,6 +166,7 @@ public class WeaponController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha3) &&  weaponInInventory[2] == true)
         {
+            PistolAmmo.active = false;
             if (currentAmmoAmounts[2] <= weaponAmmoAmounts[2])
             {
                 isOutOfAmmo = false;
@@ -197,29 +194,16 @@ public class WeaponController : MonoBehaviour
     void PistolStats()
     {
 
-        if (currentAmmoAmounts[0] > weaponAmmoAmounts[0]) //Check to see if the weapon has reached max ammo
-        {
-          currentAmmoAmounts[0] = weaponAmmoAmounts[0]; // if so set the current ammo to equal the max ammo
-        }
-        if (currentAmmoAmounts[0] <= 0) //Check to see if the weapon is out of ammo 
-        {
-            currentAmmoAmounts[0] = 0; //Stops ammo from going into minus numbers
-            isOutOfAmmo = true; //Stops the ability to fire the weapon
-            Debug.Log("Out OF AMMO");
-            outOfAmmo.PlayNoAmmoSound(); 
-        }
-        else
-        {
+        
             StartCoroutine(PistolFireRate());
             pistolFire.PlayPistolSound();
-        }
+       
        
     }
 
     IEnumerator PistolFireRate()
     {
         Debug.Log("PISTOL FIRED");
-        currentAmmoAmounts[0] -= 1f;
         weaponHasFired = true;
         
 

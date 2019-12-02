@@ -45,47 +45,49 @@ public class SkewardsController : MonoBehaviour
     void Start()
     {
         skewardNav.enabled = false;
+        skewardNav.updatePosition = false;
         myNormal = transform.up;
         StartCoroutine(startNavMeshAgent());
     }
 
     private void FixedUpdate()
     {
-        GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
-
         GravityChangeCheck();
         DeathCheck();
         RangeCheck();
-    }
-
-    void Update()
-    {
+        GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
 
     }
+
 
     void GravityChangeCheck()
     {
-        if (characterController.gravityShift == true )
+        if (characterController.gravityShift == true)
         {
             skewardNav.enabled = false;
+            skewardNav.updatePosition = false;
             myNormal = characterController.hitNormal;
             myNormal = Vector3.Lerp(myNormal, surfaceNormal, lerpSpeed * Time.deltaTime); // Update myNormal 
-            if (isSkewardDead == false)
-            {
+            Ray ray;
+            RaycastHit hit;
+            ray = new Ray(transform.position, -transform.up);
+            if (Physics.Raycast(ray, out hit, 3f))
+            { // wall ahead?
                 StartCoroutine(startNavMeshAgent());
             }
-        }
-        else if (isSkewardDead == false && playerInSight == true)
-        {
-            skewardNav.destination = player.transform.position;
+
+
         }
     }
 
     IEnumerator startNavMeshAgent()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
         skewardNav.enabled = true;
+        skewardNav.updatePosition = true;
+        characterController.gravityShift = false;
     }
+
 
     void DeathCheck()
     {

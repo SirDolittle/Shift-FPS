@@ -208,8 +208,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.1769772, z: 1.5}
-  m_Center: {x: 0, y: 0.1863575, z: 0.35229874}
+  m_Size: {x: 2, y: 1.4722185, z: 1.5}
+  m_Center: {x: 0, y: 0.042110443, z: 0.35229874}
 --- !u!54 &4579264555301203028
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -242,6 +242,7 @@ MonoBehaviour:
   SkewardSightRange: 30
   isSkewardDead: 0
   inMelee: 0
+  hasChecked: 1
 --- !u!195 &6569071500205234785
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -249,7 +250,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4579264555301203886}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 9
