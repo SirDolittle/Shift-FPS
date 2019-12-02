@@ -44,19 +44,18 @@ public class SkewardsController : MonoBehaviour
     }
     void Start()
     {
+        myNormal = characterController.myNormal;
         skewardNav.enabled = false;
         skewardNav.updatePosition = false;
-        myNormal = transform.up;
         StartCoroutine(startNavMeshAgent());
     }
 
     private void FixedUpdate()
     {
+        GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
         GravityChangeCheck();
         DeathCheck();
         RangeCheck();
-        GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
-
     }
 
 
@@ -82,7 +81,7 @@ public class SkewardsController : MonoBehaviour
 
     IEnumerator startNavMeshAgent()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         skewardNav.enabled = true;
         skewardNav.updatePosition = true;
         characterController.gravityShift = false;
@@ -101,7 +100,16 @@ public class SkewardsController : MonoBehaviour
         }
     }
 
-   
+
+    void MoveTowardsPlayer()
+    {
+        if (isSkewardDead == false && playerInSight == true && skewardNav.isOnNavMesh == true)
+        {
+            skewardNav.destination = player.transform.position;
+        }
+    }
+
+
     void RangeCheck()
     {
         Vector3 relativePos = player.transform.position - transform.position;
@@ -126,7 +134,8 @@ public class SkewardsController : MonoBehaviour
                 }
                 else if (playerDist < 5 || playerDist > 15)
                 {
-                    gameObject.GetComponent<NavMeshAgent>().speed = 8;
+
+                    MoveTowardsPlayer();
                 }
 
                 IEnumerator ThrowRate()

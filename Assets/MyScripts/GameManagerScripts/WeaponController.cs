@@ -123,6 +123,7 @@ public class WeaponController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1) && weaponInInventory[0] == true)
         {
+            isOutOfAmmo = false;
             PistolAmmo.active = true;   
             Object.Destroy(currentWEquipped);
             currentWEquipped = weapons[0];
@@ -134,7 +135,8 @@ public class WeaponController : MonoBehaviour
 
         } else if (Input.GetKeyDown(KeyCode.Alpha1) && weaponInInventory[0] == false)
         {
-            weaponNotActiveSound.PlayNoWeaponSound(); 
+            weaponNotActiveSound.PlayNoWeaponSound();
+            
         }
 
 

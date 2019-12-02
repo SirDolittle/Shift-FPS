@@ -41,18 +41,19 @@ public class DeckendsController : MonoBehaviour
     }
     void Start()
     {
+        myNormal = characterController.myNormal;
         skewardNav.enabled = false;
-        skewardNav.updatePosition = false; 
-        myNormal = transform.up;
-        StartCoroutine(startNavMeshAgent());
+        skewardNav.updatePosition = false;
+        StartCoroutine(startNavMeshAgent()); 
     }
 
     private void FixedUpdate()
     {
+        GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
         GravityChangeCheck(); 
         DeathCheck();
         RangeCheck();
-        GetComponent<Rigidbody>().AddForce(-gravity * GetComponent<Rigidbody>().mass * myNormal);
+        
        
     }
 
