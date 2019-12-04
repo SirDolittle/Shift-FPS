@@ -123,3 +123,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plasmaBall_D: 10
+  DamageUI: {fileID: 5190767695242250830, guid: 6160e08eec42a534c85184b678e9c127,
+    type: 3}

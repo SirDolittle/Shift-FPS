@@ -43,7 +43,6 @@ public class CharacterController : MonoBehaviour
     private p_GravityShiftStop p_GravityShiftStop;
     private FootSteps footSteps;
 
-
     public Rigidbody mBody;
 
 
@@ -109,7 +108,8 @@ public class CharacterController : MonoBehaviour
         {
             if (isGrounded)
             { // no: if grounded, jump up
-               GetComponent<Rigidbody>().AddForce(myNormal * jumpHeight);
+                Vector3 jumpforce = myNormal.normalized * jumpHeight; 
+               GetComponent<Rigidbody>().AddForce(jumpforce);
 
             }
         }

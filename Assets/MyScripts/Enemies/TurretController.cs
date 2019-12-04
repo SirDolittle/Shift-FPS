@@ -88,6 +88,9 @@ public class TurretController : MonoBehaviour
                     StartCoroutine(FireRate());
                 }
 
+            } else
+            {
+                turretSound.GetComponent<TurretTurning>().StopTuringSound();
             }
 
         }

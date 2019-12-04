@@ -26,7 +26,7 @@ public class DeckendsController : MonoBehaviour
     private GameObject player;
     private CharacterController characterController;
     private PlayerStats playerStats;
-    private DamageIndication damageIndication;
+    private GameObject DamageUI;
     private NavMeshAgent skewardNav;
     private EnemyStats enemyStats;
      
@@ -36,7 +36,7 @@ public class DeckendsController : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         characterController = FindObjectOfType<CharacterController>();
         playerStats = FindObjectOfType<PlayerStats>();
-        damageIndication = FindObjectOfType<DamageIndication>();
+        DamageUI = GameObject.Find("DamageIndicator");
         enemyStats = FindObjectOfType<EnemyStats>();
     }
     void Start()
@@ -133,7 +133,7 @@ public class DeckendsController : MonoBehaviour
         {
             inMelee = true;
             playerStats.currentHealth -= 15;
-            damageIndication.ShowDamageIndicator();
+            DamageUI.GetComponent<DamageIndication>().ShowDamageIndicator();
             StartCoroutine(MeleeRate());
         }
 

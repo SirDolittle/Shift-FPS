@@ -26,6 +26,7 @@ public class WeaponController : MonoBehaviour
     private GameObject levelStartWeapon;
     public GameObject playerWSlot;
     public GameObject enemyHitName;
+    public GameObject HitMarker; 
 
     private PlayerStats playerStats;
     private PistolFire pistolFire;
@@ -33,7 +34,8 @@ public class WeaponController : MonoBehaviour
     private MGFire mGFire;
     private WeaponNotActiveSound weaponNotActiveSound;
     private OutOfAmmo outOfAmmo;
-    private WeaponSwapSound weaponSwapSound; 
+    private WeaponSwapSound weaponSwapSound;
+    
 
 
     private bool isWeaponChanging = false;
@@ -218,14 +220,16 @@ public class WeaponController : MonoBehaviour
             if (hit.collider.tag == "Enemy")
             {
                 Debug.Log("Enemy Hit!");
-                hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[0];
+                //hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[0];
                 hit.collider.GetComponentInParent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[0];
+                HitMarker.GetComponent<DamageIndication>().ShowDamageIndicator(); 
 
             }
             else if (hit.collider.tag == "Explosive")
             {
                 hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[0];
                 hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
+                HitMarker.GetComponent<DamageIndication>().ShowDamageIndicator();
             }
             if (hit.rigidbody != null)
             {
@@ -272,13 +276,15 @@ public class WeaponController : MonoBehaviour
             if (hit.collider.tag == "Enemy")
             {
                 Debug.Log("Enemy Hit!");
-                hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[1];
+                //hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[1];
                 hit.collider.GetComponentInParent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[1];
+                HitMarker.GetComponent<DamageIndication>().ShowDamageIndicator();
             }
             else if (hit.collider.tag == "Explosive")
             {
                 hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[1];
                 hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
+                HitMarker.GetComponent<DamageIndication>().ShowDamageIndicator();
             }
             if (hit.rigidbody != null)
             {
@@ -331,14 +337,16 @@ public class WeaponController : MonoBehaviour
             if (hit.collider.tag == "Enemy")
             {
                 Debug.Log("Enemy Hit!");
-                hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[2];
+                //hit.collider.gameObject.GetComponent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[2];
                 hit.collider.GetComponentInParent<EnemyStats>().currentEnemyHealth -= weaponDamageStats[2];
+                HitMarker.GetComponent<DamageIndication>().ShowDamageIndicator();
 
             }
             else if (hit.collider.tag == "Explosive")
             {
                 hit.collider.GetComponentInParent<ExplosiveBarrel>().barrelHP -= weaponDamageStats[2];
                 hit.collider.GetComponentInParent<ExplosiveBarrel>().ExplodeCheck();
+                HitMarker.GetComponent<DamageIndication>().ShowDamageIndicator();
             }
             if (hit.rigidbody != null)
             {

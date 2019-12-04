@@ -6,12 +6,12 @@ public class PlasmaBall : MonoBehaviour
 {
     PlayerStats playerStats;
     public int plasmaBall_D;
-    private DamageIndication damageIndication;
+    private GameObject DamageUI; 
     // Start is called before the first frame update
     private void Awake()
     {
         playerStats = FindObjectOfType<PlayerStats>();
-        damageIndication = FindObjectOfType<DamageIndication>();
+        DamageUI = GameObject.Find("DamageIndicator"); 
     }
 
     void Start()
@@ -30,7 +30,7 @@ public class PlasmaBall : MonoBehaviour
         if (other.tag == ("Player"))
         {
             playerStats.currentHealth -= plasmaBall_D;
-            damageIndication.ShowDamageIndicator();
+            DamageUI.GetComponent<DamageIndication>().ShowDamageIndicator(); 
             Destroy(gameObject);
         }
         else if (other.tag == "PickUp" || other.tag == "Enemy")

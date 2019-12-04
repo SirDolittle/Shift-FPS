@@ -16,13 +16,14 @@ public class ExplosiveBarrel : MonoBehaviour
     PlayerStats playerStats;
     DamageIndication damageIndication;
     BarrelExplosionSound barrelExplosionSound;
+    public GameObject soundEmitter; 
 
     private void Awake()
     {
         playerStats = FindObjectOfType<PlayerStats>();
         damageIndication = FindObjectOfType<DamageIndication>();
         startingColor = gameObject.GetComponent<Renderer>().material.color;
-        barrelExplosionSound = FindObjectOfType<BarrelExplosionSound>(); 
+       
 
     }
 
@@ -38,6 +39,7 @@ public class ExplosiveBarrel : MonoBehaviour
 
     void ExplodeEffects()
     {
+        print("Started effects"); 
         GameObject player = GameObject.FindWithTag("Player");
         GameObject enemy = GameObject.FindWithTag("Enemy");
         GameObject Explosive = GameObject.FindWithTag("Explosive");
@@ -48,8 +50,8 @@ public class ExplosiveBarrel : MonoBehaviour
 
         float p_damage = Mathf.Lerp(maxDamage, minDamage, p_currentDistance);
 
-        barrelExplosionSound.PlayBExplosionSound(); 
-       RaycastHit rayHit;
+        soundEmitter.GetComponent<BarrelExplosionSound>().PlayBExplosionSound(); 
+        RaycastHit rayHit;
         if (Physics.Raycast(transform.position, relativePos, out rayHit, Mathf.Infinity))
         {
             if (rayHit.collider.tag == "Player")

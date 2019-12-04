@@ -273,6 +273,7 @@ MonoBehaviour:
   maxDistance: 10
   ExplosionForce: 100
   ExplosionsLift: 12
+  soundEmitter: {fileID: 2205992061847388769}
 --- !u!54 &5668352474762585627
 Rigidbody:
   m_ObjectHideFlags: 0
